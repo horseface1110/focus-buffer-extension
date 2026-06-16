@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>分心緩衝器</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <main class="popup">
+      <header class="header">
+        <h1>分心緩衝器</h1>
+        <p>管理打開前會被提醒的網站。</p>
+      </header>
+
+      <form class="add-form" id="add-form">
+        <label for="target-input">新增網站或頁面</label>
+        <div class="input-row">
+          <input id="target-input" name="target" type="text" placeholder="reddit.com 或 https://example.com/path" autocomplete="off">
+          <button type="submit">新增</button>
+        </div>
+        <p class="hint" id="form-message" aria-live="polite"></p>
+      </form>
+
+      <button class="current-button" id="add-current" type="button">封鎖目前網站</button>
+
+      <section class="setting-section" aria-labelledby="setting-title">
+        <h2 id="setting-title">使用時間</h2>
+        <form class="setting-form" id="limit-form">
+          <label for="limit-input">按下繼續後，幾分鐘後自動關閉</label>
+          <div class="input-row">
+            <input id="limit-input" name="limit" type="number" min="1" max="180" step="1">
+            <button type="submit">儲存</button>
+          </div>
+          <p class="hint" id="limit-message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="list-section" aria-labelledby="list-title">
+        <h2 id="list-title">封鎖清單</h2>
+        <ul class="target-list" id="target-list"></ul>
+      </section>
+    </main>
+
+    <template id="target-template">
+      <li class="target-item">
+        <span></span>
+        <button type="button">移除</button>
+      </li>
+    </template>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

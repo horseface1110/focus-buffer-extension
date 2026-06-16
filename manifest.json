@@ -1,0 +1,31 @@
+{
+  "manifest_version": 3,
+  "name": "分心緩衝器",
+  "description": "在打開容易分心的網站前，先給自己一個喝水、伸展、回到待辦的緩衝。",
+  "version": "0.1.0",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "action": {
+    "default_title": "分心緩衝器",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "css": [
+        "styles.css"
+      ],
+      "run_at": "document_start"
+    }
+  ]
+}
