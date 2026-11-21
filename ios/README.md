@@ -49,7 +49,7 @@ The packager creates the iOS containing app and Safari Web Extension targets. Th
 7. Tap **Grant access to listed websites**. Safari asks for access to the sites in the current list.
 8. Visit one of the listed sites. The pause overlay should appear.
 
-Apple documents that running the containing app installs the extension, and that the extension must then be enabled in Safari. Physical-device testing requires Apple Developer Program membership; the iOS Simulator can be used before enrolling.
+Running the containing app from Xcode installs the extension, which must then be enabled in Safari. For personal-device development, Xcode can sign with a free Apple Account (Personal Team), subject to free-provisioning limits such as short-lived app provisioning. A paid Apple Developer Program membership is needed for TestFlight and App Store distribution.
 
 ## Permission model
 
