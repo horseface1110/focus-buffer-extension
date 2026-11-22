@@ -24,7 +24,7 @@
 
 ## 安裝
 
-| 平台 | |
+| 平台 | 狀態 |
 |---|---|
 | Chrome | 尚未上架，在 `chrome://extensions/` 開啟開發人員模式，「載入未封裝項目」選 `extension` 資料夾 |
 | iPhone（Safari） | App Store 審核中，自行建置見 [ios/README.md](ios/README.md) |
