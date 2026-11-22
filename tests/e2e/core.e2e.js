@@ -62,6 +62,22 @@ test("core flow in Chromium", async (t) => {
     await facebook.close();
   });
 
+  await t.test("adding a site covers the tab already open on it, without a reload", async () => {
+    const page = await ext.newPage("https://news.example.net/today");
+    await sleep(500);
+    assert.equal(await page.locator("#focus-buffer-root").count(), 0);
+    const popup = await ext.openPopup();
+    await popup.fill("#target-input", "example.net");
+    await popup.click("#add-form button[type=submit]");
+    await popup.waitForSelector('.list-item[data-target="example.net"]');
+    await page.waitForSelector("#fb-title", { timeout: 5000 });
+    assert.equal(await page.locator("#focus-buffer-root").count(), 1);
+    await popup.click('.list-item[data-target="example.net"] .btn.danger');
+    await popup.waitForFunction(() => !document.querySelector('.list-item[data-target="example.net"]'));
+    await popup.close();
+    await page.close();
+  });
+
   await t.test("「關掉這頁」 closes the tab", async () => {
     const page = await ext.newPage(YT);
     await page.waitForSelector("#fb-title");

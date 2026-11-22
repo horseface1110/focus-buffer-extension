@@ -27,6 +27,8 @@
 3. 點「載入未封裝項目」，選專案裡的 `extension` 資料夾。
 4. 安裝後會開一個設定頁，按「授權清單中的網站」。
 
+以前直接載入專案根目錄的舊版：先在 `chrome://extensions/` 移除，再照上面載入 `extension` 資料夾。資料夾換了，Chrome 會當成另一個擴充功能，原本的網站清單和時間上限不會帶過來，要重新設定。
+
 ### iPhone（Safari）
 
 需要 Mac 和 Xcode，做法寫在 [ios/README.md](ios/README.md)。

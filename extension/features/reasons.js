@@ -27,7 +27,12 @@
   }
 
   function csvField(value) {
-    const text = String(value === undefined || value === null ? "" : value);
+    let text = String(value === undefined || value === null ? "" : value);
+    // A spreadsheet runs a cell that starts with one of these as a formula,
+    // quoted or not; a leading apostrophe makes it plain text.
+    if (/^[=+\-@\t\r]/.test(text)) {
+      text = "'" + text;
+    }
     return /[",\r\n]/.test(text) ? '"' + text.replace(/"/g, '""') + '"' : text;
   }
 

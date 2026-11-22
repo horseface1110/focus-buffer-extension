@@ -106,6 +106,8 @@ test("reasons in Chromium", async (t) => {
       target: "facebook.com",
       reason: "理由 " + (index + 1)
     }));
+    // A reason a spreadsheet would run as a formula.
+    fillers[0].reason = "=HYPERLINK(\"https://example.com\")";
     const unlockLog = fillers.concat([
       { at: new Date(2026, 10, 22, 9, 3).getTime(), target: "https://example.com/news", reason: '他說 "快看", 就看了' },
       { at: new Date(2026, 10, 23, 10, 5).getTime(), target: "youtube.com", reason: "查資料" }
@@ -137,7 +139,7 @@ test("reasons in Chromium", async (t) => {
     const lines = csv.split("\n");
     assert.equal(lines.length, 23);
     assert.equal(lines[0], "時間,網站,理由");
-    assert.equal(lines[1], "2026-11-01 08:00,Facebook,理由 1");
+    assert.equal(lines[1], '2026-11-01 08:00,Facebook,"\'=HYPERLINK(""https://example.com"")"');
     assert.equal(lines[21], '2026-11-22 09:03,example.com/news,"他說 ""快看"", 就看了"');
     assert.equal(lines[22], "2026-11-23 10:05,YouTube,查資料");
 

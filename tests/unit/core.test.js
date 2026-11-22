@@ -101,6 +101,20 @@ test("targets can be added and removed, and the registration follows", async () 
   assert.ok(!bg.calls.registered[0].matches.includes("*://reddit.com/*"));
 });
 
+test("adding a site reaches tabs already open on it, once", async () => {
+  const bg = loadBackground({
+    features: [],
+    openTabs: [
+      { id: 5, url: "https://www.reddit.com/r/all" },
+      { id: 6, url: "https://www.youtube.com/watch?v=1", guarded: true },
+      { id: 7, url: "https://example.org/" }
+    ]
+  });
+  await bg.send("targets/add", { target: "reddit.com" });
+  assert.deepEqual(bg.calls.injected.map((call) => call.tabId), [5]);
+  assert.equal(bg.calls.injected[0].files.slice(-1)[0], "content.js");
+});
+
 test("only granted hosts are registered", async () => {
   const bg = loadBackground({ features: [], granted: ["*://youtube.com/*", "*://*.youtube.com/*"] });
   const matches = await bg.send("sync");

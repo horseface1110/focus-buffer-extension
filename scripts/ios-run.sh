@@ -16,6 +16,7 @@ REPO_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 PROJECT="$REPO_DIR/ios/FocusBuffer/FocusBuffer.xcodeproj"
 LOCAL_CONFIG="$REPO_DIR/ios/Local.xcconfig"
 DERIVED="$REPO_DIR/build/ios-device"
+LOG="$REPO_DIR/build/ios-run.log"
 
 if [ ! -f "$LOCAL_CONFIG" ]; then
   echo "✗ 找不到 ios/Local.xcconfig。先複製 ios/Local.xcconfig.example，填入你的 Team ID。"
@@ -33,13 +34,14 @@ if [ -z "$DEVICE" ]; then
 fi
 
 echo "▶︎ Building…"
+mkdir -p "$(dirname "$LOG")"
 xcodebuild -project "$PROJECT" -scheme FocusBuffer -configuration Debug \
   -destination 'generic/platform=iOS' -derivedDataPath "$DERIVED" \
-  -xcconfig "$LOCAL_CONFIG" -allowProvisioningUpdates build \
-  | grep -E "error:|warning: .*signing|BUILD" || true
+  -xcconfig "$LOCAL_CONFIG" -allowProvisioningUpdates build >"$LOG" 2>&1 \
+  || { echo "✗ Build failed — see $LOG"; grep -E "error:" "$LOG" | tail -20; exit 1; }
+grep -E "warning: .*signing" "$LOG" || true
 
 APP="$DERIVED/Build/Products/Debug-iphoneos/FocusBuffer.app"
-[ -d "$APP" ] || { echo "✗ Build failed."; exit 1; }
 
 echo "▶︎ Installing on $DEVICE…"
 xcrun devicectl device install app --device "$DEVICE" "$APP"

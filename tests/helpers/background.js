@@ -62,7 +62,7 @@ function loadBackground(options = {}) {
 
   // "all" grants every host; otherwise a Set of match patterns.
   let granted = options.granted === undefined ? "all" : new Set(options.granted);
-  const calls = { registered: [], removedTabs: [], createdTabs: [], removedOrigins: [] };
+  const calls = { registered: [], removedTabs: [], createdTabs: [], removedOrigins: [], injected: [] };
 
   const api = {
     storage: { local: storageArea(data.local), session: storageArea(data.session), sync: storageArea(data.sync) },
@@ -90,6 +90,17 @@ function loadBackground(options = {}) {
       async registerContentScripts(scripts) {
         calls.registered = clone(scripts);
       },
+      // Open tabs: options.openTabs = [{ id, url, guarded }]. A probe (func)
+      // answers whether content.js already runs there; files are recorded.
+      async executeScript(details) {
+        const tab = (options.openTabs || []).find((item) => item.id === details.target.tabId);
+        if (details.func) {
+          return [{ result: Boolean(tab && tab.guarded) }];
+        }
+        calls.injected.push({ tabId: details.target.tabId, files: details.files.slice() });
+        return [{ result: undefined }];
+      },
+      async insertCSS() {},
       async unregisterContentScripts() {
         if (calls.registered.length === 0) {
           throw new Error("Nonexistent script ID");
@@ -99,6 +110,10 @@ function loadBackground(options = {}) {
     },
     tabs: {
       onRemoved: event(listeners.tabRemoved),
+      async query(filter) {
+        const patterns = [].concat(filter.url || []).map((pattern) => new RegExp("^" + pattern.split("*").map((part) => part.replace(/[.?+^$|()[\]{}\\/]/g, "\\$&")).join(".*") + "$"));
+        return (options.openTabs || []).filter((tab) => patterns.some((pattern) => pattern.test(tab.url)));
+      },
       async remove(tabId) {
         if (options.tabsCannotClose) {
           throw new Error("cannot close");

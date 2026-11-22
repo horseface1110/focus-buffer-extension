@@ -275,7 +275,39 @@ for (const id of FB.FEATURE_IDS) {
         persistAcrossSessions: true
       }
     ]);
+    await injectIntoOpenTabs(Array.from(matches));
     return Array.from(matches);
+  }
+
+  // A registration only reaches pages loaded after it. A tab that was
+  // already open on the site (「加入目前的網站」 adds the very tab the user is
+  // looking at) gets the content script now; content.js ignores a second copy,
+  // and the probe skips tabs that already have it.
+  async function injectIntoOpenTabs(matches) {
+    if (!api.tabs.query || !api.scripting.executeScript) {
+      return;
+    }
+    let tabs = [];
+    try {
+      tabs = await api.tabs.query({ url: matches });
+    } catch (error) {
+      return;
+    }
+    await Promise.all(
+      tabs.map(async (tab) => {
+        const target = { tabId: tab.id };
+        try {
+          const [probe] = await api.scripting.executeScript({ target: target, func: () => Boolean(globalThis.__focusBufferContent) });
+          if (probe && probe.result) {
+            return;
+          }
+          await api.scripting.insertCSS({ target: target, files: CONTENT_CSS });
+          await api.scripting.executeScript({ target: target, files: CONTENT_JS });
+        } catch (error) {
+          // The tab is an error page, still loading, or closed meanwhile.
+        }
+      })
+    );
   }
 
   // ---------------------------------------------------------------------
