@@ -155,20 +155,22 @@
   function renderClear(ctx) {
     const el = ctx.el;
     const idleLabel = "清除統計";
-    const button = el("button", { class: "btn danger small stats-clear", type: "button" }, idleLabel);
+    const button = el("button", { class: "btn destructive block stats-clear", type: "button" }, idleLabel);
     let armedAt = 0;
     let timer = null;
 
     const disarm = () => {
       window.clearTimeout(timer);
       armedAt = 0;
+      delete button.dataset.armed;
       button.textContent = idleLabel;
     };
 
     button.addEventListener("click", async () => {
       if (!armedAt) {
         armedAt = Date.now();
-        button.textContent = "再按一次確認";
+        button.dataset.armed = "";
+        button.textContent = "再按一次確認清除";
         timer = window.setTimeout(disarm, CONFIRM_MS);
         return;
       }

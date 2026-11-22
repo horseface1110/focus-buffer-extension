@@ -25,6 +25,9 @@
   --ink-hover: #2f403a;
   --on-ink: #ffffff;
   --danger: #a3372d;
+  --danger-fill: #b3382c;
+  --danger-tint: rgba(163, 55, 45, 0.1);
+  --on-danger: #ffffff;
   --warn: #8a5a22;
   --focus: rgba(45, 117, 105, 0.45);
   font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -44,6 +47,9 @@
     --ink-hover: #ffffff;
     --on-ink: #131b18;
     --danger: #ffb0a4;
+    --danger-fill: #d9483a;
+    --danger-tint: rgba(255, 176, 164, 0.14);
+    --on-danger: #ffffff;
     --warn: #e6b877;
     --focus: rgba(111, 195, 179, 0.55);
   }
@@ -77,11 +83,49 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Chrome and Safari on the Mac cap the popup at about 600px. Chrome then
+   scrolls the page, but Safari sizes its web view to the whole page and cuts
+   the popover off, so nothing below the cap can be scrolled to. Capping the
+   body and scrolling it keeps the page inside the popover in both. The
+   options page opens in a wide tab and keeps scrolling the page; the
+   iPhone sheet is reset below. */
+@media (max-width: 500px) {
+  body {
+    max-height: 590px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  /* A thin rounded thumb in the hairline colour instead of the system bar.
+     Chrome and Safari both honour these; the clear border leaves a 4px
+     thumb with a little air on each side. */
+  body::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  body::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  body::-webkit-scrollbar-thumb {
+    border: 2px solid transparent;
+    border-radius: 4px;
+    background: var(--line-strong) padding-box;
+  }
+
+  body::-webkit-scrollbar-thumb:hover {
+    background-color: var(--text-muted);
+  }
+}
+
 /* iPhone and iPad (popup.js sets the class): Safari sizes the sheet, so
    fill it, and the sheet already carries the extension's name as its title. */
 .is-ios body {
   width: auto;
   max-width: 520px;
+  max-height: none;
+  overflow: visible;
 }
 
 .is-ios .header {
@@ -302,6 +346,24 @@ h1 {
 
 .btn.danger:hover {
   text-decoration: underline;
+}
+
+/* A one-off destructive action that stands on its own (清除統計): a red
+   button, filled once it is armed and the next press acts. */
+.btn.destructive {
+  color: var(--danger);
+  border-color: currentColor;
+  background: none;
+}
+
+.btn.destructive:hover {
+  background: var(--danger-tint);
+}
+
+.btn.destructive[data-armed] {
+  color: var(--on-danger);
+  border-color: var(--danger-fill);
+  background: var(--danger-fill);
 }
 
 .btn:disabled {

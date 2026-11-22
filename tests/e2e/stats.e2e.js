@@ -192,14 +192,14 @@ test("stats in Chromium", async (t) => {
 
     // One press only arms the button, and it gives up after a few seconds.
     await button.click();
-    assert.equal(await button.textContent(), "再按一次確認");
+    assert.equal(await button.textContent(), "再按一次確認清除");
     await popup.waitForFunction(() => document.querySelector(".stats-clear").textContent === "清除統計", null, { timeout: 8000 });
     assert.equal((await ext.getState()).stats[today]["youtube.com"].shown, 2);
 
     // A double-click is one decision, not two.
     await button.dblclick();
     await sleep(300);
-    assert.equal(await button.textContent(), "再按一次確認");
+    assert.equal(await button.textContent(), "再按一次確認清除");
     assert.equal((await ext.getState()).stats[today]["youtube.com"].shown, 2);
 
     await sleep(300);

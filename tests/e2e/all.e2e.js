@@ -94,12 +94,39 @@ test("all features together in Chromium", async (t) => {
     await popup.setViewportSize({ width: 380, height: 600 });
     await popup.goto("chrome-extension://" + ext.extensionId + "/popup.html#stats");
     await popup.waitForSelector("#target-list > *", { state: "attached" });
-    const bars = await popup.evaluate(() => ({
-      horizontal: innerHeight - document.documentElement.clientHeight,
-      tall: document.documentElement.scrollHeight > innerHeight
-    }));
-    assert.ok(bars.tall, "the stats tab should be taller than the popup for this test to mean anything");
-    assert.equal(bars.horizontal, 0);
+    const box = await popup.evaluate(() => {
+      const body = document.body;
+      const tall = body.scrollHeight > body.clientHeight;
+      body.scrollTop = body.scrollHeight;
+      const last = document.querySelector(".stats-clear").getBoundingClientRect();
+      return {
+        tall: tall,
+        scrolled: body.scrollTop > 0,
+        lastVisible: last.bottom <= innerHeight,
+        sideways: body.scrollWidth - body.clientWidth,
+        pageSideways: document.documentElement.scrollWidth - innerWidth
+      };
+    });
+    assert.ok(box.tall, "the stats tab should be taller than the popup for this test to mean anything");
+    assert.ok(box.scrolled, "the body should scroll");
+    assert.ok(box.lastVisible, "the last button should come into view");
+    assert.equal(box.sideways, 0);
+    assert.equal(box.pageSideways, 0);
+    await popup.close();
+  });
+
+  await t.test("the popup page never grows past the cap, so Safari's popover can't cut it off", async () => {
+    // Safari on the Mac sizes its web view to the whole page instead of
+    // scrolling it, so the page itself must stay within the cap.
+    const popup = await ext.context.newPage();
+    await popup.setViewportSize({ width: 380, height: 1200 });
+    await popup.goto("chrome-extension://" + ext.extensionId + "/popup.html#modes");
+    await popup.waitForSelector("#target-list > *", { state: "attached" });
+    for (const tab of ["sites", "todos", "stats", "modes"]) {
+      await popup.click('.tab[data-tab="' + tab + '"]');
+      const height = await popup.evaluate(() => Math.ceil(document.documentElement.getBoundingClientRect().height));
+      assert.ok(height <= 600, tab + " is " + height + "px tall");
+    }
     await popup.close();
   });
 
