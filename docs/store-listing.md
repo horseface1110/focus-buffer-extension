@@ -27,9 +27,9 @@ App Store 和 Chrome Web Store 的上架文字。主要語言是繁體中文，�
 **關鍵字**（≤100 bytes，名稱裡已有的字不用重複）：
 專注,分心,拖延,自律,網站,限制,封鎖,番茄鐘,待辦,習慣,Safari,延伸功能
 
-**支援網址**：https://github.com/horseface1110/focus-buffer-extension/issues
+**支援網址**：https://github.com/ncchen99/focus-buffer-extension/issues
 
-**隱私權政策網址**：https://github.com/horseface1110/focus-buffer-extension/blob/main/PRIVACY.md
+**隱私權政策網址**：https://github.com/ncchen99/focus-buffer-extension/blob/unified-modes/PRIVACY.md
 
 **描述**：
 

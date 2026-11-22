@@ -31,10 +31,12 @@ test("todos in Chromium", async (t) => {
   const stored = async () => (await ext.getState()).todos;
   const byText = async (text) => (await stored()).find((item) => item.text === text);
 
-  await t.test("with no to-dos the overlay keeps its default task", async () => {
+  await t.test("with no to-dos the overlay drops the to-do step and renumbers the rest", async () => {
     const page = await openOverlay();
-    assert.equal(await page.textContent(TASK_LABEL), "看一下今天最重要的待辦");
+    assert.equal(await page.locator('#focus-buffer-root .fb-task[data-task="todo"]').count(), 0);
     assert.equal(await page.locator("#focus-buffer-root .fb-todos").count(), 0);
+    assert.deepEqual(await page.locator("#focus-buffer-root .fb-task-mark").allTextContents(), ["1", "2"]);
+    assert.deepEqual(await page.locator("#focus-buffer-root .fb-task-label").allTextContents(), ["喝一口水", "站起來伸展 30 秒"]);
     await page.close();
   });
 

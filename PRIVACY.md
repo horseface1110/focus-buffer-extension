@@ -27,4 +27,4 @@
 
 ## 聯絡
 
-有問題請到 GitHub 開 issue：<https://github.com/horseface1110/focus-buffer-extension/issues>
+有問題請到 GitHub 開 issue：<https://github.com/ncchen99/focus-buffer-extension/issues>

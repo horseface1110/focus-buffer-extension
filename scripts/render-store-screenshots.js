@@ -21,12 +21,15 @@ const { launchExtension } = require("../tests/helpers/extension.js");
 
 const ROOT = path.join(__dirname, "..");
 const OUT = path.join(ROOT, "store-assets", "screenshots");
-const ICON_PATH = fs.readFileSync(path.join(ROOT, "store-assets", "icon", "icon.svg"), "utf8").match(/<path[^>]*\/>/)[0];
+const ICON_SVG = fs.readFileSync(path.join(ROOT, "store-assets", "icon", "icon.svg"), "utf8");
+const ICON_PATH = ICON_SVG.match(/<path[^>]*\/>/)[0];
 
 const NOW = Date.now();
 const DAY = 24 * 60 * 60 * 1000;
 const PHONE = { width: 390, height: 844 };
-const DESKTOP = { width: 1040, height: 650 };
+const DESKTOP = { width: 900, height: 700 };
+// Scrollbars are an artefact of capturing, not part of the UI.
+const NO_SCROLLBARS = "*{scrollbar-width:none !important}*::-webkit-scrollbar{display:none !important}";
 
 const FONT = "'PingFang TC', 'Noto Sans TC', system-ui, sans-serif";
 const GREEN = "linear-gradient(180deg, #3b8273 0%, #22574c 100%)";
@@ -94,21 +97,24 @@ async function captureScreens(viewport, scale) {
   await overlay.setViewportSize(viewport);
   await overlay.goto("https://www.youtube.com/");
   await overlay.waitForSelector("#fb-title");
+  await overlay.addStyleTag({ content: NO_SCROLLBARS });
   await overlay.waitForTimeout(400);
   shots.overlay = await overlay.screenshot();
   await overlay.close();
 
   for (const tab of ["sites", "todos", "stats", "modes"]) {
     const popup = await ext.context.newPage();
-    // The popup is 380px wide on the desktop; on the phone it fills the sheet.
+    // The popup is 380px wide on the desktop and Chrome caps it at 600px
+    // tall; on the phone it fills the sheet.
     await popup.setViewportSize(phone ? viewport : { width: 380, height: 600 });
     await popup.goto("chrome-extension://" + ext.extensionId + "/popup.html#" + tab);
     await popup.waitForSelector("#target-list > *", { state: "attached" });
     if (phone) {
       await popup.addStyleTag({ content: "body{width:auto !important}.popup{padding-top:22px}" });
     }
+    await popup.addStyleTag({ content: NO_SCROLLBARS });
     await popup.waitForTimeout(400);
-    shots[tab] = await popup.screenshot({ fullPage: !phone });
+    shots[tab] = await popup.screenshot();
     await popup.close();
   }
 
@@ -155,28 +161,58 @@ function iphoneFrame(frame, shot) {
   );
 }
 
-// 1280×800. Headline on the left, the browser on the right.
-function chromeFrame(frame, shot, popupShot) {
+// 1280×800. Headline on the left, a browser window on the right that fits
+// inside the frame. Settings frames show the toolbar popup hanging from the
+// extension's toolbar button over an ordinary page, the way it really looks;
+// the pause-screen frame shows the page itself.
+function chromeFrame(frame, pageShot, popupShot) {
   const colors = themeOf(frame);
-  const window =
-    '<div style="position:absolute;left:470px;top:96px;width:900px;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 30px 70px ' + colors.shadow + '">' +
-    '<div style="display:flex;align-items:center;gap:8px;height:42px;padding:0 16px;background:#e9ece6">' +
-    ["#ec6a5e", "#f4bf4f", "#61c554"].map((color) => '<span style="width:12px;height:12px;border-radius:50%;background:' + color + '"></span>').join("") +
-    '<span style="flex:1;height:26px;margin-left:14px;border-radius:13px;background:#fff"></span></div>' +
-    '<img src="' + dataUrl(shot) + '" style="display:block;width:100%">' +
+  const left = 452;
+  const width = 776;
+  const toolbar = 48;
+  const contentHeight = popupShot ? 600 : Math.round((width / DESKTOP.width) * DESKTOP.height);
+  const top = Math.round((800 - toolbar - contentHeight) / 2);
+
+  const dots = ["#ec6a5e", "#f4bf4f", "#61c554"].map((color) => '<span style="width:12px;height:12px;border-radius:50%;background:' + color + '"></span>').join("");
+  const puzzle =
+    '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5f6b66" stroke-width="2" stroke-linejoin="round">' +
+    '<path d="M10 3h4v3a2 2 0 1 0 0 0h0v2h4v4h-2a2 2 0 1 0 0 4h2v4h-4v-2a2 2 0 1 0-4 0v2H6v-4h2a2 2 0 1 0 0-4H6V8h4z"/></svg>';
+  const button =
+    '<span style="display:grid;place-items:center;width:30px;height:30px;border-radius:8px;' +
+    (popupShot ? "background:rgba(45,117,105,.16)" : "") + '">' +
+    '<span style="width:20px;height:20px;border-radius:5px;overflow:hidden;display:block">' +
+    ICON_SVG.replace("<svg ", '<svg width="20" height="20" style="display:block" ') +
+    "</span></span>";
+  const bar =
+    '<div style="display:flex;align-items:center;gap:8px;height:' + toolbar + 'px;padding:0 14px;background:#e9ece6">' +
+    dots +
+    '<span style="flex:1;display:flex;align-items:center;height:30px;margin:0 10px 0 14px;padding:0 14px;border-radius:15px;background:#fff;color:#5f6b66;font-size:13px">www.youtube.com</span>' +
+    puzzle + button + "</div>";
+
+  // An ordinary page, drawn as grey blocks, so the popup is the only content.
+  const blank =
+    '<div style="height:' + contentHeight + 'px;padding:28px 36px;background:#fff">' +
+    ['<div style="height:22px;width:42%;border-radius:6px;background:#eceeea"></div>',
+     '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:24px">' +
+       Array.from({ length: 6 }, () => '<div><div style="aspect-ratio:16/9;border-radius:8px;background:#eceeea"></div><div style="height:10px;width:80%;margin-top:10px;border-radius:5px;background:#eceeea"></div></div>').join("") +
+       "</div>"].join("") +
     "</div>";
+
+  const content = popupShot ? blank : '<img src="' + dataUrl(pageShot) + '" style="display:block;width:100%">';
   const popup = popupShot
-    ? '<div style="position:absolute;left:820px;top:150px;width:330px;border-radius:12px;overflow:hidden;box-shadow:0 24px 60px rgba(23,35,31,0.35)">' +
+    ? '<div style="position:absolute;top:' + (top + toolbar + 4) + "px;left:" + (left + width - 14 - 330) + 'px;width:330px;border-radius:10px;overflow:hidden;box-shadow:0 18px 50px rgba(23,35,31,.30),0 0 0 1px rgba(23,35,31,.08)">' +
       '<img src="' + dataUrl(popupShot) + '" style="display:block;width:100%"></div>'
     : "";
+
   return (
     '<body style="margin:0;width:1280px;height:800px;overflow:hidden;position:relative;background:' + colors.background + ";font-family:" + FONT + '">' +
-    '<div style="position:absolute;left:72px;top:0;bottom:0;width:360px;display:flex;flex-direction:column;justify-content:center">' +
+    '<div style="position:absolute;left:72px;top:0;bottom:0;width:340px;display:flex;flex-direction:column;justify-content:center">' +
     wordmark(colors, 22) +
-    '<h1 style="margin:28px 0 0;font-size:64px;line-height:1.16;font-weight:700;letter-spacing:0;color:' + colors.text + '">' + frame.headline.join("<br>") + "</h1>" +
-    '<p style="margin:18px 0 0;font-size:23px;line-height:1.45;color:' + colors.sub + '">' + frame.sub + "</p>" +
+    '<h1 style="margin:28px 0 0;font-size:60px;line-height:1.16;font-weight:700;letter-spacing:0;color:' + colors.text + '">' + frame.headline.join("<br>") + "</h1>" +
+    '<p style="margin:18px 0 0;font-size:22px;line-height:1.45;color:' + colors.sub + '">' + frame.sub + "</p>" +
     "</div>" +
-    window +
+    '<div style="position:absolute;left:' + left + "px;top:" + top + "px;width:" + width + 'px;border-radius:12px;overflow:hidden;box-shadow:0 30px 70px ' + colors.shadow + '">' +
+    bar + content + "</div>" +
     popup +
     "</body>"
   );
@@ -207,8 +243,7 @@ async function renderFrames(name, viewport, scale, htmlFor) {
   await renderFrames("iphone-6.9", { width: 440, height: 956 }, 3, (frame) => iphoneFrame(frame, phoneShots[frame.shot]));
 
   const desktopShots = await captureScreens(DESKTOP, 2);
-  // On the desktop the settings live in the toolbar popup, so every frame
-  // but the first shows the popup over the pause screen.
+  // On the desktop the settings live in the toolbar popup.
   await renderFrames("chrome", { width: 1280, height: 800 }, 1, (frame) =>
     chromeFrame(frame, desktopShots.overlay, frame.shot === "overlay" ? null : desktopShots[frame.shot])
   );

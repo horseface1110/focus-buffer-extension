@@ -297,7 +297,16 @@
       render(ctx) {
         const extras = ctx.extras;
         const taskRow = ctx.tasks && ctx.tasks.todo;
-        if (!taskRow || !extras || !Array.isArray(extras.open) || extras.open.length === 0) {
+        if (!taskRow || !extras || !Array.isArray(extras.open)) {
+          return;
+        }
+        // Nothing to do: drop the to-do step instead of pointing at an empty
+        // list, and number the steps that are left 1, 2.
+        if (extras.open.length === 0) {
+          taskRow.remove();
+          ctx.panel.querySelectorAll(".fb-task .fb-task-mark").forEach((mark, index) => {
+            mark.textContent = String(index + 1);
+          });
           return;
         }
         const el = ctx.el;
