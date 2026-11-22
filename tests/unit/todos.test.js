@@ -62,6 +62,15 @@ test("at most 50 items can be open at once", async () => {
   assert.equal(bg.data.local.todos.filter((item) => !item.done).length, 50);
 });
 
+test("reopening a finished item counts toward the 50 open", async () => {
+  const bg = loadBackground({ features: ["todos"] });
+  const items = await addAll(bg, Array.from({ length: 50 }, (unused, index) => "待辦 " + (index + 1)));
+  await bg.send("todos/toggle", { id: items[0].id, done: true });
+  await bg.send("todos/add", { text: "第 51 件" });
+  await assert.rejects(bg.send("todos/toggle", { id: items[0].id, done: false }), /未完成的待辦最多 50 件/);
+  assert.equal(bg.data.local.todos.filter((item) => !item.done).length, 50);
+});
+
 test("toggle marks an item done and open again", async () => {
   const bg = loadBackground({ features: ["todos"] });
   const [item] = await addAll(bg, ["寫週報"]);

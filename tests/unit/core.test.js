@@ -121,6 +121,21 @@ test("only granted hosts are registered", async () => {
   assert.deepEqual(Array.from(matches).sort(), ["*://*.youtube.com/*", "*://youtube.com/*"]);
 });
 
+test("a host whose permission was revoked is left alone, and open tabs are told", async () => {
+  const bg = loadBackground({ features: [], granted: ["*://youtube.com/*", "*://*.youtube.com/*"] });
+  assert.equal((await bg.send("gate", { url: YT }, 1)).action, "overlay");
+  await bg.send("event", { name: "continue", url: YT }, 1);
+
+  bg.setGranted([]);
+  bg.listeners.permissionRemoved.forEach((listener) => listener({ origins: ["*://youtube.com/*"] }));
+  await new Promise((resolve) => setTimeout(resolve, 20));
+
+  assert.equal((await bg.send("gate", { url: YT }, 1)).action, "none");
+  assert.equal((await bg.send("tick", { url: YT, seconds: 30 }, 1)).action, "none");
+  // Content scripts refresh on any storage change; this one says why.
+  assert.equal(typeof bg.data.local.permissionsChangedAt, "number");
+});
+
 test("the limit must be a whole number of minutes in range", async () => {
   const bg = loadBackground({ features: [] });
   await bg.send("limit/set", { minutes: 20 });

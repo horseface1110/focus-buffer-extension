@@ -204,6 +204,23 @@ test("reasons in Chromium", async (t) => {
     await page.close();
   });
 
+  await t.test("switching the reason on or off while the overlay is up takes effect at once", async () => {
+    // The switch is off after the last test.
+    const page = await openOverlay();
+    assert.equal(await page.locator(INPUT).count(), 0);
+
+    await ext.setState({ reasonRequired: true });
+    await page.waitForSelector(INPUT, { timeout: 5000 });
+    await page.click(CONTINUE);
+    assert.match(await page.textContent(ERROR), /請先寫下理由/);
+    assert.ok(!(await page.locator(CONTINUE).isDisabled()), "continuing without a reason must not start the countdown");
+
+    await ext.setState({ reasonRequired: false });
+    await page.waitForSelector(INPUT, { state: "detached", timeout: 5000 });
+    assert.equal(await page.locator("#fb-title").count(), 1);
+    await page.close();
+  });
+
   await t.test("a refused change shows the error and puts the switch back", async () => {
     // Stands in for strict mode: turning the question off is not allowed.
     await ext.evaluate(() => {

@@ -95,7 +95,7 @@ test("休息模式 in Chromium", async (t) => {
   await t.test("the daily limit is set in the popup and enforced", async () => {
     const popup = await openModes(ext);
     const select = popup.locator('[data-action="rest-limit"]');
-    assert.deepEqual(await select.locator("option").allTextContents(), ["0 次", "1 次", "2 次", "3 次", "4 次", "5 次"]);
+    assert.deepEqual(await select.locator("option").allTextContents(), ["0 次", "1 次", "2 次", "3 次", "4 次", "5 次", "6 次", "7 次", "8 次", "9 次", "10 次"]);
     assert.equal(await select.inputValue(), "3");
 
     // One break was used above, so a limit of one leaves none.

@@ -12,7 +12,7 @@
   const DEFAULT_DAILY_LIMIT = 3;
   const MAX_DAILY_LIMIT = 10;
   const CHOICES = [5, 10, 15];
-  const LIMIT_OPTIONS = [0, 1, 2, 3, 4, 5];
+  const LIMIT_OPTIONS = Array.from({ length: MAX_DAILY_LIMIT + 1 }, (unused, index) => index);
 
   // ---- shared, pure -------------------------------------------------------
   function restUntil(state) {

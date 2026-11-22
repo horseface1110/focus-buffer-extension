@@ -56,10 +56,16 @@ the same file.
     // ---- content script -------------------------------------------------
     overlay: {
       // ctx = { gate, extras, root, panel, slots, tasks, continueButton,
-      //         setStatus(text), redraw, send, el, refresh }
-      // redraw is true when the overlay of this visit is drawn again in
-      // place because the gate changed.
+      //         setStatus(text), redraw, keepOverlay(keep), send, el, refresh }
+      // The overlay is drawn again in place (redraw is true) when the gate
+      // or any feature's extras change, keeping typed text and focus; never
+      // while the countdown runs. Call keepOverlay() right before sending a
+      // change the overlay already shows (ticking a to-do), so that change
+      // does not redraw it; keepOverlay(false) if sending failed.
       render(ctx) {},
+      // true when this feature's extras change on their own (stats' counts),
+      // so they never cause a redraw.
+      volatile: false,
       // Runs when the user presses 「我真的要繼續」, before the countdown.
       // Return false to stop (after telling the user why), or an object to
       // merge into event.data of the "continue" event. May be async.

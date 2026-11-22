@@ -230,6 +230,9 @@
 
     // ---- content script -------------------------------------------------
     overlay: {
+      // The counts go up as soon as the overlay is shown; that alone is no
+      // reason to redraw it.
+      volatile: true,
       render(ctx) {
         const extras = ctx.extras;
         if (!extras) {

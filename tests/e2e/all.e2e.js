@@ -60,6 +60,24 @@ test("all features together in Chromium", async (t) => {
     await page.close();
   });
 
+  await t.test("a to-do added elsewhere shows up on the open overlay, and what was typed stays", async () => {
+    const page = watch(await ext.newPage(YT));
+    await page.waitForSelector("#fb-title");
+    const count = await page.textContent("#focus-buffer-root .fb-stats-line .fb-usage-number");
+    await page.fill("#focus-buffer-root input.fb-input", "看一下訊息");
+    await page.focus("#focus-buffer-root input.fb-input");
+
+    const state = await ext.getState();
+    await ext.setState({ todos: state.todos.concat({ id: "b", text: "回信給房東", done: false, createdAt: NOW + 1, doneAt: 0 }) });
+    await page.waitForFunction(() => document.querySelector("#focus-buffer-root").innerText.includes("回信給房東"), null, { timeout: 5000 });
+
+    assert.equal(await page.inputValue("#focus-buffer-root input.fb-input"), "看一下訊息");
+    assert.ok(await page.evaluate(() => document.activeElement && document.activeElement.matches("#focus-buffer-root input.fb-input")));
+    // The redraw is the same visit: the count does not go up.
+    assert.equal(await page.textContent("#focus-buffer-root .fb-stats-line .fb-usage-number"), count);
+    await page.close();
+  });
+
   await t.test("a break started in the popup opens listed sites, with a countdown pill", async () => {
     const page = watch(await ext.newPage("https://www.instagram.com/"));
     await page.waitForSelector("#fb-title");

@@ -28,6 +28,10 @@
   let lastTickAt = 0;
 
   let countdownTimer = null;
+  // Set by a feature that just changed its own data from the overlay and
+  // already shows the result (ticking a to-do): the next gate's feature data
+  // is taken as seen instead of redrawing.
+  let adoptExtras = false;
   let mediaTimer = null;
   const pausedMedia = new Set();
   let pageCleanups = [];
@@ -113,11 +117,29 @@
       clearPageUi();
       // Redraw only when something the user can see changed, so a refresh
       // does not wipe a countdown or a half-typed reason.
-      const signature = JSON.stringify([next.target, next.canContinue, next.message, next.waitSeconds]);
+      // Feature data counts too (a to-do added, 繼續前要寫理由 switched on),
+      // except what a feature marks as changing on its own (stats' counts).
+      const extras = {};
+      for (const feature of FB.features) {
+        if (next.extras && feature.id in next.extras && !(feature.overlay && feature.overlay.volatile)) {
+          extras[feature.id] = next.extras[feature.id];
+        }
+      }
+      const core = JSON.stringify([next.target, next.canContinue, next.message, next.waitSeconds]);
+      const signature = JSON.stringify([core, extras]);
       const showing = root && !root.classList.contains("fb-cover");
-      if (!showing || root.dataset.signature !== signature) {
+      // Once the countdown runs the user has already passed every check;
+      // redrawing now would only restart it.
+      const counting = showing && countdownTimer !== null && root.dataset.target === next.target;
+      const adopted = showing && adoptExtras && root.dataset.core === core;
+      if (adopted && root.dataset.signature !== signature) {
+        adoptExtras = false;
+        root.dataset.signature = signature;
+      }
+      if (!showing || (root.dataset.signature !== signature && !counting)) {
         const sameVisit = Boolean(showing && root.dataset.target === next.target);
         showOverlay(next, sameVisit);
+        root.dataset.core = core;
         root.dataset.signature = signature;
       }
       return;
@@ -187,6 +209,15 @@
     countdownTimer = null;
 
     const container = mountRoot(false);
+    // A redraw keeps what the user typed and where the focus was.
+    const typed = {};
+    let focusedId = "";
+    if (redraw) {
+      for (const field of container.querySelectorAll("input[id], textarea[id]")) {
+        typed[field.id] = field.value;
+      }
+      focusedId = document.activeElement && container.contains(document.activeElement) ? document.activeElement.id : "";
+    }
     container.replaceChildren();
     container.dataset.target = current.target;
     container.setAttribute("role", "dialog");
@@ -252,6 +283,10 @@
         status.textContent = text;
       },
       redraw: Boolean(redraw),
+      // Call right before sending a change the overlay already shows.
+      keepOverlay: (keep) => {
+        adoptExtras = keep !== false;
+      },
       send: FB.send,
       el: el,
       refresh: refresh
@@ -264,6 +299,14 @@
         } catch (error) {
           console.error("Focus Buffer: " + feature.id + " overlay failed", error);
         }
+      }
+    }
+
+    for (const [id, value] of Object.entries(typed)) {
+      const field = container.querySelector("#" + CSS.escape(id));
+      if (field && field.type !== "checkbox" && field.type !== "radio") {
+        field.value = value;
+        field.dispatchEvent(new Event("input"));
       }
     }
 
@@ -311,7 +354,10 @@
     if (!redraw) {
       FB.send("event", { name: "shown", url: location.href }).catch(() => {});
     }
-    if (document.readyState !== "loading") {
+    const refocus = focusedId ? container.querySelector("#" + CSS.escape(focusedId)) : null;
+    if (refocus) {
+      refocus.focus({ preventScroll: true });
+    } else if (document.readyState !== "loading" && !redraw) {
       closeButton.focus({ preventScroll: true });
     }
   }

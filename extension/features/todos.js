@@ -207,9 +207,15 @@
     checkbox.addEventListener("change", async () => {
       const done = checkbox.checked;
       row.classList.toggle("is-done", done);
+      if (ctx.keepOverlay) {
+        ctx.keepOverlay();
+      }
       try {
         await ctx.send("todos/toggle", { id: todo.id, done: done });
       } catch (error) {
+        if (ctx.keepOverlay) {
+          ctx.keepOverlay(false);
+        }
         checkbox.checked = !done;
         row.classList.toggle("is-done", !done);
         ctx.setStatus(error.message);
@@ -255,6 +261,9 @@
             throw new Error("找不到這件待辦，可能已經刪掉了。");
           }
           const done = message.done === undefined ? !item.done : Boolean(message.done);
+          if (!done && item.done && openOf(todos).length >= MAX_OPEN) {
+            throw new Error("未完成的待辦最多 " + MAX_OPEN + " 件，先完成或刪掉幾件再移回來。");
+          }
           if (done !== Boolean(item.done)) {
             item.done = done;
             item.doneAt = done ? ctx.now : null;

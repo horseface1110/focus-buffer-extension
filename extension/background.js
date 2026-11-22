@@ -125,6 +125,11 @@ for (const id of FB.FEATURE_IDS) {
     if (!target) {
       return { action: "none" };
     }
+    // A tab can outlive its host permission: the user revoked it in the
+    // browser after the content script was already running there.
+    if (!(await api.permissions.contains({ origins: FB.originsFor(target) }))) {
+      return { action: "none" };
+    }
 
     const day = FB.dayKey(now);
     const today = state.dailyUsage[day] || {};
@@ -539,6 +544,14 @@ for (const id of FB.FEATURE_IDS) {
 
   api.permissions.onRemoved.addListener(() => {
     syncContentScripts().catch((error) => console.error("Focus Buffer permission sync failed:", error));
+    // Unregistering only affects pages loaded later. Content scripts already
+    // running refresh on any storage change, ask the gate again and stand
+    // down now that the host is no longer granted.
+    FB.store
+      .update((state) => {
+        state.permissionsChangedAt = Date.now();
+      })
+      .catch((error) => console.error("Focus Buffer permission notice failed:", error));
   });
 
   api.tabs.onRemoved.addListener((tabId) => {
