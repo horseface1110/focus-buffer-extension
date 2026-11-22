@@ -128,6 +128,22 @@ body {
   overflow: visible;
 }
 
+/* On iPad the sheet is a popover that takes its width from the page, so an
+   auto width let it shrink until the content no longer fit. Give it the
+   desktop popup's width instead. */
+.is-ipad body {
+  width: 380px;
+}
+
+/* Also on iPad, the default auto grid column grew to fit the sites
+   section's content and pushed it past the popover's right edge. Pin the
+   column to the popup's width. Only here: in the iPhone sheet a 1fr column
+   stretches the rows and opens a gap above the site list. */
+.is-ipad .section,
+.is-ipad .list {
+  grid-template-columns: minmax(0, 1fr);
+}
+
 .is-ios .header {
   display: none;
 }

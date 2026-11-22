@@ -10,10 +10,14 @@
   let currentHost = "";
   let toastTimer = null;
 
-  // Safari's extension sheet on iPhone and iPad gets its own layout.
+  // Safari's extension sheet on iPhone and iPad gets its own layout. iPad
+  // Safari says it is a Mac, so it is told apart by its touch screen.
   const touchMac = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
   if (/iPhone|iPad|iPod/.test(navigator.userAgent) || touchMac) {
     document.documentElement.classList.add("is-ios");
+  }
+  if (/iPad/.test(navigator.userAgent) || touchMac) {
+    document.documentElement.classList.add("is-ipad");
   }
 
   init().catch((error) => toast("初始化失敗：" + error.message, "error"));
