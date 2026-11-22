@@ -95,10 +95,16 @@ No account or login is needed.
 | `04-modes.png` | 要認真時開嚴格模式 | 休息與嚴格模式 |
 | `05-sites.png` | 哪些網站你決定 | 網站清單 |
 
-畫面是用擴充功能的真實介面加上範例資料渲染出來的。介面或標題改了之後重新產生：
+App Store Connect 預設的截圖格只收 6.1／6.3 吋（1206×2622），所以另外縮了一份在 `store-assets/screenshots/iphone-6.3/`，1.0.0 送審時傳的是這份。
+
+畫面是用擴充功能的真實介面加上範例資料渲染出來的。介面或標題改了之後重新產生，再縮一份 6.3 吋：
 
 ```bash
 node scripts/render-store-screenshots.js
+```
+
+```bash
+mkdir -p store-assets/screenshots/iphone-6.3 && for f in store-assets/screenshots/iphone-6.9/*.png; do sips -z 2622 1206 "$f" --out store-assets/screenshots/iphone-6.3/$(basename "$f"); done
 ```
 
 標題寫在腳本開頭的 `FRAMES`。
