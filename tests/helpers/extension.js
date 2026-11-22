@@ -83,7 +83,8 @@ async function launchExtension(options = {}) {
   const context = await chromium.launchPersistentContext(profileDir, {
     executablePath: findChromium(),
     headless: false,
-    args: ["--headless=new", "--disable-extensions-except=" + extensionDir, "--load-extension=" + extensionDir],
+    // Pages may autoplay, as a real video site does after the user's first click.
+    args: ["--headless=new", "--autoplay-policy=no-user-gesture-required", "--disable-extensions-except=" + extensionDir, "--load-extension=" + extensionDir],
     // Only the store-screenshot script sets these two.
     deviceScaleFactor: options.deviceScaleFactor,
     colorScheme: options.colorScheme

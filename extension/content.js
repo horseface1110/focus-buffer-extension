@@ -190,9 +190,10 @@
 
   function removeOverlay() {
     window.clearInterval(countdownTimer);
-    window.clearInterval(mediaTimer);
     countdownTimer = null;
-    mediaTimer = null;
+    // However the overlay goes away (Continue, a break, the site taken off
+    // the list), what it paused plays again.
+    resumeMedia();
     if (root) {
       root.remove();
       root = null;

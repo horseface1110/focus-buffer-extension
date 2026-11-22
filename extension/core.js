@@ -128,7 +128,7 @@
       } catch (error) {
         return false;
       }
-      if (stripWww(pageHost) !== stripWww(wanted.hostname)) {
+      if (page.protocol !== wanted.protocol || stripWww(pageHost) !== stripWww(wanted.hostname)) {
         return false;
       }
       const wantedPath = cleanPath(wanted.pathname).toLowerCase();

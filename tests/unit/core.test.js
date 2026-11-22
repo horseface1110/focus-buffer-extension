@@ -27,6 +27,11 @@ test("matchTarget covers subdomains and path prefixes and prefers the most speci
   assert.equal(FB.matchTarget(targets, "https://example.com/about"), "");
   assert.equal(FB.matchTarget(["example.com", "https://example.com/news"], "https://example.com/news/1"), "https://example.com/news");
   assert.equal(FB.matchTarget(targets, "chrome://newtab"), "");
+  // A URL target is a prefix of the whole URL, scheme included.
+  assert.equal(FB.matchTarget(["http://example.com/work"], "http://example.com/work/1"), "http://example.com/work");
+  assert.equal(FB.matchTarget(["http://example.com/work"], "https://example.com/work/1"), "");
+  assert.equal(FB.matchTarget(["https://example.com/work"], "http://example.com/work/1"), "");
+  assert.equal(FB.matchTarget(["example.com"], "http://example.com/work"), "example.com");
 });
 
 test("originsFor asks for the host and its subdomains", () => {
