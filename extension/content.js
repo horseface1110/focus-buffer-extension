@@ -90,19 +90,31 @@
     }
     refreshing = true;
     try {
-      let next;
-      try {
-        next = await FB.send("gate", { url: location.href });
-      } catch (error) {
-        // The extension was reloaded or is unreachable: do not trap the page.
-        next = { action: "none" };
-      }
-      apply(next);
+      apply(await askGate());
     } finally {
       refreshing = false;
       if (refreshAgain) {
         refreshAgain = false;
         refresh();
+      }
+    }
+  }
+
+  // Safari on iPhone and iPad suspends the service worker, and a message
+  // sent while it is waking up can come back with no answer. Ask again for a
+  // few seconds, with the cover still up, before deciding the extension is
+  // really gone (reloaded or removed) and letting the page through.
+  const GATE_RETRY_DELAYS = [250, 500, 1000, 2000];
+
+  async function askGate() {
+    for (let attempt = 0; ; attempt += 1) {
+      try {
+        return await FB.send("gate", { url: location.href });
+      } catch (error) {
+        if (attempt >= GATE_RETRY_DELAYS.length) {
+          return { action: "none" };
+        }
+        await new Promise((resolve) => window.setTimeout(resolve, GATE_RETRY_DELAYS[attempt]));
       }
     }
   }
