@@ -6,6 +6,7 @@
 //  Resources/Base.lproj/Main.html, shown in a web view.
 //
 
+import SafariServices
 import UIKit
 import WebKit
 
@@ -30,8 +31,22 @@ class ViewController: UIViewController, WKNavigationDelegate, WKScriptMessageHan
         guard message.body as? String == "open-settings" else {
             return
         }
-        // iOS has no public link straight to Safari's extension list; this
-        // opens the app's own page in Settings, one step away from it.
+        // iOS 26.2 can open Settings right at this extension's page under
+        // Safari > Extensions. The app's own Settings page (the only thing
+        // older systems can open) has no link to Safari's extensions, so
+        // it's only a fallback.
+        if #available(iOS 26.2, *), let appID = Bundle.main.bundleIdentifier {
+            SFSafariSettings.openExtensionsSettings(forIdentifiers: [appID + ".Extension"]) { error in
+                if error != nil {
+                    self.openAppSettings()
+                }
+            }
+        } else {
+            openAppSettings()
+        }
+    }
+
+    private func openAppSettings() {
         if let url = URL(string: UIApplication.openSettingsURLString) {
             UIApplication.shared.open(url)
         }
