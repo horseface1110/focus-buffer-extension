@@ -88,6 +88,21 @@ test("all features together in Chromium", async (t) => {
     await popup.close();
   });
 
+  await t.test("a tall popup scrolls down but never sideways", async () => {
+    // Chrome caps the popup at 600px; the stats tab is taller than that.
+    const popup = await ext.context.newPage();
+    await popup.setViewportSize({ width: 380, height: 600 });
+    await popup.goto("chrome-extension://" + ext.extensionId + "/popup.html#stats");
+    await popup.waitForSelector("#target-list > *", { state: "attached" });
+    const bars = await popup.evaluate(() => ({
+      horizontal: innerHeight - document.documentElement.clientHeight,
+      tall: document.documentElement.scrollHeight > innerHeight
+    }));
+    assert.ok(bars.tall, "the stats tab should be taller than the popup for this test to mean anything");
+    assert.equal(bars.horizontal, 0);
+    await popup.close();
+  });
+
   await t.test("no script errors along the way", () => {
     assert.deepEqual(errors, []);
   });

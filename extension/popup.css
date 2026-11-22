@@ -58,7 +58,11 @@
   display: none !important;
 }
 
+/* Chrome caps the popup at 600px tall. Past that a vertical scrollbar takes
+   its width out of the 380px body, which would otherwise add a sideways
+   scrollbar; the 15px it covers is only the body's right padding. */
 html {
+  overflow-x: hidden;
   background: var(--bg);
 }
 
