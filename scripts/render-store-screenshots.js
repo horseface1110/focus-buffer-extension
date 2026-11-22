@@ -6,6 +6,7 @@
 // Output:
 //   store-assets/screenshots/iphone-6.9/*.png   1320×2868 (App Store, 6.9")
 //   store-assets/screenshots/chrome/*.png       1280×800  (Chrome Web Store)
+//   store-assets/screenshots/mac/*.png          2560×1600 (Mac App Store, Safari look)
 //
 // It works in two passes, both in the headless Chromium the end-to-end
 // tests use. First the extension is loaded with sample data and each screen
@@ -102,6 +103,7 @@ async function captureScreens(viewport, scale) {
   shots.overlay = await overlay.screenshot();
   await overlay.close();
 
+  const SCROLL_TO = { modes: '[data-action="strict-enable"]' };
   for (const tab of ["sites", "todos", "stats", "modes"]) {
     const popup = await ext.context.newPage();
     // The popup is 380px wide on the desktop and Chrome caps it at 600px
@@ -113,6 +115,22 @@ async function captureScreens(viewport, scale) {
       await popup.addStyleTag({ content: "body{width:auto !important}.popup{padding-top:22px}" });
     }
     await popup.addStyleTag({ content: NO_SCROLLBARS });
+    if (!phone && SCROLL_TO[tab]) {
+      // The popup scrolls past 590px, which would cut the button the headline
+      // talks about in half. Drop the logo row (the iPhone sheet has none
+      // either) and scroll whatever is still missing, so the shot starts at
+      // the tabs and ends on a whole button.
+      await popup.evaluate((selector) => {
+        const button = document.querySelector(selector);
+        const overflow = () => button.getBoundingClientRect().bottom + 14 - document.body.clientHeight;
+        if (overflow() > 0) {
+          document.querySelector(".header").hidden = true;
+        }
+        if (overflow() > 0) {
+          document.body.scrollTop += overflow();
+        }
+      }, SCROLL_TO[tab]);
+    }
     await popup.waitForTimeout(400);
     shots[tab] = await popup.screenshot();
     await popup.close();
@@ -164,8 +182,10 @@ function iphoneFrame(frame, shot) {
 // 1280×800. Headline on the left, a browser window on the right that fits
 // inside the frame. Settings frames show the toolbar popup hanging from the
 // extension's toolbar button over an ordinary page, the way it really looks;
-// the pause-screen frame shows the page itself.
-function chromeFrame(frame, pageShot, popupShot) {
+// the pause-screen frame shows the page itself. `safari` draws Safari's
+// toolbar (centred address field, no extensions puzzle) and the popup as a
+// popover with an arrow, for the Mac App Store set.
+function chromeFrame(frame, pageShot, popupShot, safari) {
   const colors = themeOf(frame);
   const left = 452;
   const width = 776;
@@ -183,11 +203,17 @@ function chromeFrame(frame, pageShot, popupShot) {
     '<span style="width:20px;height:20px;border-radius:5px;overflow:hidden;display:block">' +
     ICON_SVG.replace("<svg ", '<svg width="20" height="20" style="display:block" ') +
     "</span></span>";
-  const bar =
-    '<div style="display:flex;align-items:center;gap:8px;height:' + toolbar + 'px;padding:0 14px;background:#e9ece6">' +
-    dots +
-    '<span style="flex:1;display:flex;align-items:center;height:30px;margin:0 10px 0 14px;padding:0 14px;border-radius:15px;background:#fff;color:#5f6b66;font-size:13px">www.youtube.com</span>' +
-    puzzle + button + "</div>";
+  const bar = safari
+    ? '<div style="display:flex;align-items:center;gap:10px;height:' + toolbar + 'px;padding:0 14px;background:#ecedeb">' +
+      dots +
+      '<span style="width:22px;height:22px;margin-left:12px;border-radius:5px;border:1.5px solid #9aa29e"></span>' +
+      '<span style="flex:1"></span>' +
+      '<span style="display:flex;align-items:center;justify-content:center;width:46%;height:30px;border-radius:8px;background:#e1e3e0;color:#3c4642;font-size:13px">youtube.com</span>' +
+      '<span style="flex:1"></span>' + button + "</div>"
+    : '<div style="display:flex;align-items:center;gap:8px;height:' + toolbar + 'px;padding:0 14px;background:#e9ece6">' +
+      dots +
+      '<span style="flex:1;display:flex;align-items:center;height:30px;margin:0 10px 0 14px;padding:0 14px;border-radius:15px;background:#fff;color:#5f6b66;font-size:13px">www.youtube.com</span>' +
+      puzzle + button + "</div>";
 
   // An ordinary page, drawn as grey blocks, so the popup is the only content.
   const blank =
@@ -199,9 +225,14 @@ function chromeFrame(frame, pageShot, popupShot) {
     "</div>";
 
   const content = popupShot ? blank : '<img src="' + dataUrl(pageShot) + '" style="display:block;width:100%">';
+  const popupLeft = left + width - 14 - 330;
+  // Safari's popover points at its button with a small arrow.
+  const arrow = safari
+    ? '<div style="position:absolute;top:' + (top + toolbar + 2) + "px;left:" + (left + width - 14 - 15 - 9) + 'px;width:18px;height:18px;transform:rotate(45deg);background:#f7f8f3;box-shadow:-1px -1px 0 rgba(23,35,31,.08)"></div>'
+    : "";
   const popup = popupShot
-    ? '<div style="position:absolute;top:' + (top + toolbar + 4) + "px;left:" + (left + width - 14 - 330) + 'px;width:330px;border-radius:10px;overflow:hidden;box-shadow:0 18px 50px rgba(23,35,31,.30),0 0 0 1px rgba(23,35,31,.08)">' +
-      '<img src="' + dataUrl(popupShot) + '" style="display:block;width:100%"></div>'
+    ? '<div style="position:absolute;top:' + (top + toolbar + (safari ? 10 : 4)) + "px;left:" + popupLeft + 'px;width:330px;border-radius:' + (safari ? 12 : 10) + 'px;overflow:hidden;box-shadow:0 18px 50px rgba(23,35,31,.30),0 0 0 1px rgba(23,35,31,.08)">' +
+      '<img src="' + dataUrl(popupShot) + '" style="display:block;width:100%"></div>' + arrow
     : "";
 
   return (
@@ -246,6 +277,10 @@ async function renderFrames(name, viewport, scale, htmlFor) {
   // On the desktop the settings live in the toolbar popup.
   await renderFrames("chrome", { width: 1280, height: 800 }, 1, (frame) =>
     chromeFrame(frame, desktopShots.overlay, frame.shot === "overlay" ? null : desktopShots[frame.shot])
+  );
+  // Mac App Store: the same frames in Safari, at 2560×1600.
+  await renderFrames("mac", { width: 1280, height: 800 }, 2, (frame) =>
+    chromeFrame(frame, desktopShots.overlay, frame.shot === "overlay" ? null : desktopShots[frame.shot], true)
   );
 })().catch((error) => {
   console.error(error);

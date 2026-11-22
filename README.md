@@ -33,6 +33,10 @@
 
 需要 Mac 和 Xcode，做法寫在 [ios/README.md](ios/README.md)。
 
+### Mac（Safari）
+
+做法寫在 [mac/README.md](mac/README.md)。
+
 ## 專案結構
 
 ```

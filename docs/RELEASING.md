@@ -70,7 +70,15 @@ npm test
 
 在 App Store Connect 的版本頁面選剛上傳的 build，上傳 `store-assets/screenshots/iphone-6.9/` 的截圖（6.9 吋，1320×2868），貼上文案，送出審核。審核備註也在 [store-listing.md](store-listing.md)，記得貼上，裡面說明了怎麼啟用延伸功能。
 
-### 6. 打 tag
+### 6. Mac 版
+
+```bash
+./scripts/mac-archive.sh --upload
+```
+
+Mac 和 iPhone 版是同一個 App 的兩個平台。在 App Store Connect 的 App 頁面左側選「macOS」，版本頁選剛上傳的 build，上傳 `store-assets/screenshots/mac/` 的截圖（2560×1600），文案和審核備註跟 iPhone 版一樣，啟用步驟改成 Mac 的（見 [mac/README.md](../mac/README.md)）。不加 `--upload` 只會在 `build/mac/` 產出簽好的 `.pkg`。
+
+### 7. 打 tag
 
 ```bash
 git tag -a v1.1.0 -m "先緩緩 1.1.0"
