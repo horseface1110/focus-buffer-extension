@@ -1,0 +1,33 @@
+/* features/rest.css — 休息模式. This file is loaded on listed sites too, so
+   the popup rules hang off a class no page is likely to use. */
+
+/* On the page: the countdown pill. Fixed-width digits keep it from
+   twitching every second. */
+#focus-buffer-page .fb-rest-pill {
+  white-space: nowrap;
+}
+
+#focus-buffer-page .fb-rest-time {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Popup */
+.fb-rest .fb-rest-status {
+  font-size: 18px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.fb-rest .fb-rest-limit {
+  justify-content: space-between;
+}
+
+.fb-rest .fb-rest-limit-label {
+  flex: 1;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.fb-rest .fb-rest-limit .select {
+  flex: 0 0 96px;
+}

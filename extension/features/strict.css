@@ -1,0 +1,53 @@
+/* features/strict.css — 嚴格模式. This file is loaded on listed sites too,
+   so the popup rules hang off a class no page is likely to use. The overlay
+   itself needs nothing extra: the core shows the message. */
+
+.fb-strict .fb-strict-body {
+  display: grid;
+  gap: 10px;
+}
+
+/* Seven days on one line, also in a 350px popup. */
+.fb-strict .fb-strict-days {
+  flex-wrap: nowrap;
+}
+
+.fb-strict .fb-strict-days .chip {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.fb-strict .fb-strict-times .input {
+  /* Two time inputs and 「到」 share one line, also at 350px. */
+  flex: 1 1 0;
+  padding: 0 8px;
+}
+
+.fb-strict .fb-strict-budget-label {
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.fb-strict .fb-strict-budget .input {
+  flex: 0 0 96px;
+}
+
+.fb-strict .fb-strict-status {
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.fb-strict .fb-strict-off {
+  justify-content: space-between;
+}
+
+.fb-strict .fb-strict-off-time {
+  color: var(--warn);
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.fb-strict .fb-strict-honest {
+  font-size: 12px;
+}

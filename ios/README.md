@@ -1,78 +1,58 @@
-# Focus Buffer — iPhone Safari edition
+# 先緩緩：iPhone Safari 版
 
-This folder contains the Safari Web Extension port of the existing Chrome extension. The Chrome implementation at the repository root is intentionally unchanged.
+這個資料夾是包住擴充功能的 iOS App。擴充功能本體在上一層的 `extension/`，跟 Chrome 版是同一份，Xcode 專案直接引用那個資料夾，沒有另外複製。
 
-## Feature parity
+App 本身只有一頁啟用教學，功能都在 Safari 的延伸功能裡。它只在 Safari 有作用，管不到其他瀏覽器或 App。
 
-- Default targets: Instagram, Facebook, and YouTube.
-- Add/remove domains or full HTTP(S) URL paths.
-- Add the current Safari website to the list.
-- Show the existing full-page pause overlay on matching pages.
-- Show today's usage for the current target and all targets.
-- Require a 10-second wait before continuing.
-- Close the current Safari tab after the configured amount of foreground use (default: 5 minutes).
-- Keep settings and usage data locally on the device. No server, account, analytics, or remote API is used.
+需求：Xcode 27 以上，iOS 17 以上的 iPhone。
 
-## Platform requirements
+## 設定簽署
 
-The extension uses Safari's dynamic content-script registration and optional host-permission flow. The manifest targets Safari 27 / iOS 27 so the same behavior can be tested against the current Safari Web Extension permission model.
+Team ID 不放進版控。複製範本，填入自己的：
 
-The extension only affects Safari. It does not block the same sites in Chrome, other browsers, or native apps.
+```bash
+cp ios/Local.xcconfig.example ios/Local.xcconfig
+```
 
-## Generate the Xcode project
+`DEVELOPMENT_TEAM` 填 10 碼的 Team ID。專案預設的 bundle ID 是 `com.ncchen.focusbuffer`，屬於負責上架的帳號。其他人要在自己的帳號下建置，就在同一個檔案加上 `FOCUSBUFFER_BUNDLE_ID = com.你的名字.focusbuffer`，延伸功能會自動變成 `<這個>.Extension`。
 
-Install Xcode and clone this repository on your Mac. From the repository root, run:
+免費的 Personal Team 可以裝到自己的 iPhone，但描述檔七天就過期。TestFlight 和 App Store 需要付費的開發者帳號。
 
-    xcrun safari-web-extension-packager ./ios/extension \
-      --project-location ./ios/FocusBufferXcode \
-      --app-name FocusBuffer \
-      --bundle-identifier com.horseface1110.focusbuffer \
-      --swift \
-      --ios-only \
-      --copy-resources \
-      --no-open
+## 裝到 iPhone
 
-Then open:
+手機接上 Mac、解鎖、開啟開發者模式，然後：
 
-    open ./ios/FocusBufferXcode/FocusBuffer.xcodeproj
+```bash
+./scripts/ios-run.sh
+```
 
-The packager creates the iOS containing app and Safari Web Extension targets. The project is generated locally and is not committed because it contains machine-specific signing and Xcode project configuration.
+也可以用 Xcode：打開 `ios/FocusBuffer/FocusBuffer.xcodeproj`，在兩個 target 的 Signing & Capabilities 選自己的 Team，選手機當目的地後 Run。這樣選的 Team 會寫進專案檔，commit 前記得還原。
 
-## Build and install on iPhone
+裝好後：
 
-1. Open the generated project in Xcode.
-2. Select the containing iOS app target and set your own development Team under Signing & Capabilities.
-3. Connect your iPhone, select it as the run destination, and choose Product > Run.
-4. On iPhone, open Settings > Apps > Safari > Extensions (the exact Settings grouping can vary by iOS release).
-5. Enable Focus Buffer.
-6. Open Safari > More > Extensions > Focus Buffer.
-7. Tap **Grant access to listed websites**. Safari asks for access to the sites in the current list.
-8. Visit one of the listed sites. The pause overlay should appear.
+1. iPhone 的 設定 › App › Safari › 延伸功能，打開「先緩緩」。
+2. 打開 Safari，點網址列旁的選單，選「先緩緩」。
+3. 按「授權清單中的網站」，Safari 會問要不要允許，選「永遠允許」。
+4. 打開清單裡的網站，應該會看到提醒畫面。
 
-Running the containing app from Xcode installs the extension, which must then be enabled in Safari. For personal-device development, Xcode can sign with a free Apple Account (Personal Team), subject to free-provisioning limits such as short-lived app provisioning. A paid Apple Developer Program membership is needed for TestFlight and App Store distribution.
+## 在模擬器上跑
 
-## Permission model
+```bash
+xcodebuild -project ios/FocusBuffer/FocusBuffer.xcodeproj -scheme FocusBuffer \
+  -destination 'generic/platform=iOS Simulator' -derivedDataPath build/ios-sim \
+  CODE_SIGNING_ALLOWED=NO build
+```
 
-Safari requires explicit host access before a content script can run on a site. The extension therefore:
+再把 `build/ios-sim/Build/Products/Debug-iphonesimulator/FocusBuffer.app` 拖進模擬器。啟用方式跟實機一樣。
 
-- requests only the domains the user adds;
-- asks for permission from a user-initiated action;
-- registers content scripts only for hosts whose permissions are granted;
-- removes a host permission when the last matching target is removed.
+## 改擴充功能之後
 
-A URL target such as https://example.com/path requests access to that host, but the overlay itself only appears on URLs whose path starts with /path. A domain target such as reddit.com matches the domain and its subdomains.
+`extension/` 的檔案改完，重新建置 App 就會帶進去。新增到 `extension/features/` 和 `extension/icons/` 的檔案會自動包含。直接放在 `extension/` 底下的新檔案，要在 Xcode 裡加進「FocusBuffer Extension」target 的資源。
 
-## Timer behavior
+## 除錯
 
-The auto-close timer counts foreground time on the page after the user chooses to continue. It pauses when Safari hides the page, matching the Chrome version's visibilityState behavior. The per-visit elapsed time is kept in sessionStorage so reloading the same page does not reset the configured auto-close timer.
+手機接上 Mac，在 iPhone 的 設定 › App › Safari › 進階 打開「網頁檢閱器」，然後在 Mac 的 Safari › 開發 › 你的 iPhone 底下，可以檢查延伸功能的背景頁面和 popup。
 
-Today's usage is accumulated in browser.storage.local and is scoped to the device's local calendar day.
+## 上架
 
-## Development notes
-
-- Edit the files in ios/extension/.
-- Re-run the packager only if you need to regenerate the Xcode project structure.
-- After changing extension resources, build and run the iOS app target again in Xcode to copy the updated resources into the installed app.
-- To debug the extension, connect the iPhone to the Mac, enable Web Inspector on iPhone, then use Safari on Mac > Develop > [your iPhone] > Focus Buffer extension page.
-
-The extension has not yet been built or run on a physical iPhone from this environment. Complete the device test checklist above before treating the port as release-ready.
+見 [docs/RELEASING.md](../docs/RELEASING.md)。

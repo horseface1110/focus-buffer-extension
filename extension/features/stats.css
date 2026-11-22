@@ -1,0 +1,131 @@
+/* features/stats.css — the 紀錄 tab of the popup. The overlay line only
+   uses the shared .fb-note, so it needs nothing here.
+
+   This file is also injected into the listed sites together with the
+   overlay, so every rule is tied to the popup section
+   (.section[data-feature="stats"]) and cannot restyle somebody else's page. */
+
+/* 今天: two headline figures, then what happened to those visits as
+   smaller ones. Plain numbers on the page, no tiles. */
+.section[data-feature="stats"] .stats-tiles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px 22px;
+}
+
+.section[data-feature="stats"] .stats-tile {
+  display: grid;
+  min-width: 0;
+}
+
+.section[data-feature="stats"] .stats-tile-value {
+  color: var(--text);
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.25;
+  font-variant-numeric: tabular-nums;
+}
+
+.section[data-feature="stats"] .stats-tile.wide .stats-tile-value {
+  font-size: 26px;
+  line-height: 1.15;
+}
+
+.section[data-feature="stats"] .stats-tile-label {
+  color: var(--text-muted);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.section[data-feature="stats"] .stats-clear-row {
+  justify-content: space-between;
+}
+
+.section[data-feature="stats"] .stats-clear-row .muted {
+  flex: 1;
+  min-width: 0;
+  font-size: 12px;
+}
+
+/* 最近 7 天: one column per day, oldest on the left. */
+.section[data-feature="stats"] .stats-chart {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.section[data-feature="stats"] .stats-day {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  justify-items: stretch;
+  text-align: center;
+}
+
+/* Tall enough for the highest bar (64px, set in stats.js) plus its count. */
+.section[data-feature="stats"] .stats-day-plot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 2px;
+  height: 86px;
+  border-bottom: 1px solid var(--line);
+}
+
+.section[data-feature="stats"] .stats-day-count {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.section[data-feature="stats"] .stats-day-bar {
+  display: block;
+  flex: 0 0 auto;
+  width: 60%;
+  max-width: 24px;
+  border-radius: 4px 4px 0 0;
+  background: var(--green);
+  opacity: 0.45;
+}
+
+.section[data-feature="stats"] .stats-day-label {
+  color: var(--text-muted);
+  font-size: 11px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.section[data-feature="stats"] .stats-day.is-today .stats-day-bar {
+  opacity: 1;
+}
+
+.section[data-feature="stats"] .stats-day.is-today .stats-day-count,
+.section[data-feature="stats"] .stats-day.is-today .stats-day-label {
+  color: var(--text);
+  font-weight: 800;
+}
+
+/* 今天各網站 */
+.section[data-feature="stats"] .stats-site-values {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 12px;
+  color: var(--text-muted);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.section[data-feature="stats"] .stats-site-count {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.section[data-feature="stats"] .stats-site-minutes {
+  min-width: 52px;
+  text-align: right;
+}
