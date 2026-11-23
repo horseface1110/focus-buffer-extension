@@ -102,6 +102,12 @@ html.focus-buffer-locked body {
   letter-spacing: -0.04em;
 }
 
+/* content.js sets lang on the root from the extension's language. */
+#focus-buffer-root:lang(en) .fb-shell::before {
+  content: "Focus Buffer.";
+  letter-spacing: -0.03em;
+}
+
 #focus-buffer-root .fb-panel {
   margin: 0;
   padding: 0;
@@ -460,6 +466,42 @@ html.focus-buffer-locked body {
 
   #focus-buffer-root .fb-button {
     flex-basis: 100%;
+  }
+}
+
+/* Short windows (a laptop with the bookmarks bar out): close the gaps so
+   the two buttons stay on screen without scrolling. */
+@media (max-height: 780px) {
+  #focus-buffer-root {
+    padding-top: 24px;
+    padding-bottom: 24px;
+  }
+
+  #focus-buffer-root .fb-shell::before {
+    margin-bottom: 16px;
+  }
+
+  #focus-buffer-root .fb-usage {
+    margin-top: 16px;
+  }
+
+  #focus-buffer-root .fb-actions-list,
+  #focus-buffer-root .fb-slot[data-slot="form"],
+  #focus-buffer-root .fb-controls {
+    margin-top: 18px;
+  }
+
+  #focus-buffer-root .fb-task {
+    min-height: 40px;
+    padding: 8px 0;
+  }
+
+  #focus-buffer-root .fb-todo {
+    min-height: 32px;
+  }
+
+  #focus-buffer-root .fb-field-label {
+    margin-bottom: 8px;
   }
 }
 

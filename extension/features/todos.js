@@ -86,7 +86,7 @@
           {
             class: "btn small danger todos-remove",
             type: "button",
-            "aria-label": "刪除「" + item.text + "」",
+            "aria-label": FB.t("deleteItem", item.text),
             onclick: async () => {
               await request(ctx, "todos/remove", { id: item.id });
               // Land on the item that moved up into this place, so several
@@ -97,7 +97,7 @@
               });
             }
           },
-          "刪除"
+          FB.t("delete")
         );
 
     return el(
@@ -117,10 +117,10 @@
       class: "input todos-input",
       type: "text",
       maxLength: MAX_LENGTH,
-      placeholder: "下一件要做的事…",
+      placeholder: FB.t("todoPlaceholder"),
       autocomplete: "off",
       enterKeyHint: "done",
-      "aria-label": "新增待辦",
+      "aria-label": FB.t("addTodo"),
       oninput: () => {
         draft = input.value;
       }
@@ -151,14 +151,14 @@
         }
       },
       input,
-      el("button", { class: "btn primary", type: "submit" }, "新增")
+      el("button", { class: "btn primary", type: "submit" }, FB.t("add"))
     );
 
     card.append(
-      el("div", { class: "section-heading" }, el("h2", {}, "待辦清單"), el("span", { class: "count todos-count" }, String(open.length))),
+      el("div", { class: "section-heading" }, el("h2", {}, FB.t("todoList")), el("span", { class: "count todos-count" }, String(open.length))),
       form,
       open.length === 0
-        ? el("p", { class: "empty" }, "還沒有待辦。")
+        ? el("p", { class: "empty" }, FB.t("noTodos"))
         : el("ul", { class: "list todos-list" }, open.map((item, index) => todoRow(ctx, item, index)))
     );
   }
@@ -181,17 +181,17 @@
                 await redraw(ctx, addInput);
               }
             },
-            "清除已完成"
+            FB.t("clearDone")
           );
 
-    card.append(el("div", { class: "section-heading" }, el("h2", {}, "已完成"), clearButton));
+    card.append(el("div", { class: "section-heading" }, el("h2", {}, FB.t("doneHeading")), clearButton));
     if (done.length === 0) {
-      card.append(el("p", { class: "empty" }, "還沒有完成的待辦。"));
+      card.append(el("p", { class: "empty" }, FB.t("noDone")));
       return;
     }
     card.append(el("ul", { class: "list todos-list" }, done.slice(0, POPUP_DONE_ITEMS).map((item, index) => todoRow(ctx, item, index))));
     if (done.length > POPUP_DONE_ITEMS) {
-      card.append(el("p", { class: "muted todos-done-count" }, "共 " + done.length + " 件，這裡只列最近完成的 " + POPUP_DONE_ITEMS + " 件。"));
+      card.append(el("p", { class: "muted todos-done-count" }, FB.t("doneCount", done.length, POPUP_DONE_ITEMS)));
     }
   }
 
@@ -237,15 +237,15 @@
           .replace(/\s+/g, " ")
           .trim();
         if (!text) {
-          throw new Error("請先輸入待辦事項。");
+          throw new Error(FB.t("todoEmpty"));
         }
         if (text.length > MAX_LENGTH) {
-          throw new Error("待辦事項最多 " + MAX_LENGTH + " 個字。");
+          throw new Error(FB.t("todoTooLong", MAX_LENGTH));
         }
         return ctx.store.update((state) => {
           const todos = readTodos(state);
           if (openOf(todos).length >= MAX_OPEN) {
-            throw new Error("未完成的待辦最多 " + MAX_OPEN + " 件，先完成或刪掉幾件再新增。");
+            throw new Error(FB.t("todoTooManyAdd", MAX_OPEN));
           }
           const item = { id: newId(todos, ctx.now), text: text, done: false, createdAt: ctx.now, doneAt: null };
           state.todos = todos.concat(item);
@@ -258,11 +258,11 @@
           const todos = readTodos(state);
           const item = todos.find((entry) => entry.id === message.id);
           if (!item) {
-            throw new Error("找不到這件待辦，可能已經刪掉了。");
+            throw new Error(FB.t("todoNotFound"));
           }
           const done = message.done === undefined ? !item.done : Boolean(message.done);
           if (!done && item.done && openOf(todos).length >= MAX_OPEN) {
-            throw new Error("未完成的待辦最多 " + MAX_OPEN + " 件，先完成或刪掉幾件再移回來。");
+            throw new Error(FB.t("todoTooManyRestore", MAX_OPEN));
           }
           if (done !== Boolean(item.done)) {
             item.done = done;
@@ -323,13 +323,13 @@
 
         const label = taskRow.querySelector(".fb-task-label");
         if (label) {
-          label.textContent = "先做一件待辦";
+          label.textContent = FB.t("taskDoTodo");
         }
 
-        const list = el("ul", { class: "fb-todos", "aria-label": "待辦清單" }, shown.map((todo) => overlayRow(ctx, todo)));
+        const list = el("ul", { class: "fb-todos", "aria-label": FB.t("todoList") }, shown.map((todo) => overlayRow(ctx, todo)));
         const more = Number(extras.openCount || 0) - shown.length;
         if (more > 0) {
-          list.append(el("li", { class: "fb-todos-more" }, "還有 " + more + " 件"));
+          list.append(el("li", { class: "fb-todos-more" }, FB.t("moreTodos", more)));
         }
         taskRow.after(list);
       }

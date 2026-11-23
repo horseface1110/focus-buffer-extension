@@ -235,7 +235,8 @@
     container.dataset.target = current.target;
     container.setAttribute("role", "dialog");
     container.setAttribute("aria-modal", "true");
-    container.setAttribute("aria-label", "分心緩衝提醒");
+    container.setAttribute("aria-label", FB.t("overlayLabel"));
+    container.setAttribute("lang", FB.t("langTag"));
 
     const slot = (name) => el("div", { class: "fb-slot", dataset: { slot: name } });
     const slots = { top: slot("top"), stats: slot("stats"), tasks: slot("tasks"), form: slot("form"), bottom: slot("bottom") };
@@ -243,35 +244,35 @@
     const task = (key, mark, label) =>
       el("div", { class: "fb-task", dataset: { task: key } }, el("span", { class: "fb-task-mark" }, mark), el("span", { class: "fb-task-label" }, label));
     const tasks = {
-      water: task("water", "1", "喝一口水"),
-      todo: task("todo", "2", "看一下今天最重要的待辦"),
-      stretch: task("stretch", "3", "站起來伸展 30 秒")
+      water: task("water", "1", FB.t("taskWater")),
+      todo: task("todo", "2", FB.t("taskTodo")),
+      stretch: task("stretch", "3", FB.t("taskStretch"))
     };
 
     const usageCard = (value, label) =>
       el("div", {}, el("span", { class: "fb-usage-number" }, value), el("span", { class: "fb-usage-label" }, label));
 
-    const closeButton = el("button", { class: "fb-button fb-button-primary", type: "button", dataset: { action: "close" } }, "關掉這頁");
+    const closeButton = el("button", { class: "fb-button fb-button-primary", type: "button", dataset: { action: "close" } }, FB.t("closePage"));
     const continueButton = el(
       "button",
       { class: "fb-button fb-button-secondary", type: "button", dataset: { action: "continue" } },
-      "我真的要繼續"
+      FB.t("continueAnyway")
     );
     const status = el("p", { class: "fb-status", "aria-live": "polite" });
 
     const panel = el(
       "section",
       { class: "fb-panel", "aria-labelledby": "fb-title" },
-      el("h1", { id: "fb-title" }, "你剛剛打開了 " + current.siteName),
+      el("h1", { id: "fb-title" }, FB.t("openedSite", current.siteName)),
       slots.top,
       el(
         "div",
-        { class: "fb-usage", "aria-label": "今天的使用時間" },
-        usageCard(FB.formatMinutes(current.usage.siteSeconds), "這個網站"),
-        usageCard(FB.formatMinutes(current.usage.totalSeconds), "全部網站")
+        { class: "fb-usage", "aria-label": FB.t("usageLabel") },
+        usageCard(FB.formatMinutes(current.usage.siteSeconds), FB.t("thisSite")),
+        usageCard(FB.formatMinutes(current.usage.totalSeconds), FB.t("allSites"))
       ),
       slots.stats,
-      el("div", { class: "fb-actions-list", "aria-label": "回到專注的小任務" }, tasks.water, tasks.todo, tasks.stretch),
+      el("div", { class: "fb-actions-list", "aria-label": FB.t("tasksLabel") }, tasks.water, tasks.todo, tasks.stretch),
       slots.tasks,
       slots.form,
       el("div", { class: "fb-controls" }, closeButton, current.canContinue === false ? null : continueButton),
@@ -281,7 +282,7 @@
     container.append(el("main", { class: "fb-shell" }, panel));
 
     if (current.canContinue === false) {
-      status.textContent = current.message || "現在不能繼續。";
+      status.textContent = current.message || FB.t("cannotContinue");
     }
 
     const contextFor = (feature) => ({
@@ -333,7 +334,7 @@
       }
       if (!closed) {
         closeButton.disabled = false;
-        status.textContent = "沒辦法自動關閉，請自己關掉這個分頁。";
+        status.textContent = FB.t("cannotAutoClose");
       }
     });
 
@@ -400,8 +401,8 @@
     }
 
     const render = () => {
-      status.textContent = "繼續後 " + limitMinutes + " 分鐘自動關閉。";
-      continueButton.textContent = remaining + " 秒後繼續";
+      status.textContent = FB.t("autoCloseAfter", limitMinutes);
+      continueButton.textContent = FB.t("continueIn", remaining);
     };
     render();
 

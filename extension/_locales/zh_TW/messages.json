@@ -1,0 +1,822 @@
+{
+  "extName": {
+    "message": "先緩緩"
+  },
+  "extDescription": {
+    "message": "打開容易分心的網站前先緩一緩：喝口水、看看待辦，再決定要不要繼續。"
+  },
+  "langTag": {
+    "message": "zh-Hant"
+  },
+  "listSeparator": {
+    "message": "、"
+  },
+  "minutes": {
+    "message": "$p1$ 分鐘",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "times": {
+    "message": "$p1$ 次",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "noResponse": {
+    "message": "擴充功能沒有回應，請再試一次。"
+  },
+  "settingLocked": {
+    "message": "目前不能變更這個設定。"
+  },
+  "invalidTarget": {
+    "message": "請輸入有效的網域或網址，例如 reddit.com。"
+  },
+  "targetExists": {
+    "message": "$p1$ 已經在清單裡。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "limitRange": {
+    "message": "請輸入 $p1$ 到 $p2$ 分鐘。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "overlayLabel": {
+    "message": "分心緩衝提醒"
+  },
+  "taskWater": {
+    "message": "喝一口水"
+  },
+  "taskTodo": {
+    "message": "看一下今天最重要的待辦"
+  },
+  "taskStretch": {
+    "message": "站起來伸展 30 秒"
+  },
+  "taskDoTodo": {
+    "message": "先做一件待辦"
+  },
+  "closePage": {
+    "message": "關掉這頁"
+  },
+  "continueAnyway": {
+    "message": "我真的要繼續"
+  },
+  "openedSite": {
+    "message": "你剛剛打開了 $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "usageLabel": {
+    "message": "今天的使用時間"
+  },
+  "thisSite": {
+    "message": "這個網站"
+  },
+  "allSites": {
+    "message": "全部網站"
+  },
+  "tasksLabel": {
+    "message": "回到專注的小任務"
+  },
+  "cannotContinue": {
+    "message": "現在不能繼續。"
+  },
+  "cannotAutoClose": {
+    "message": "沒辦法自動關閉，請自己關掉這個分頁。"
+  },
+  "autoCloseAfter": {
+    "message": "繼續後 $p1$ 分鐘自動關閉。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "continueIn": {
+    "message": "$p1$ 秒後繼續",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "initFailed": {
+    "message": "初始化失敗：$p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "tabsLabel": {
+    "message": "設定分類"
+  },
+  "tabSites": {
+    "message": "網站"
+  },
+  "tabTodos": {
+    "message": "待辦"
+  },
+  "tabStats": {
+    "message": "紀錄"
+  },
+  "tabModes": {
+    "message": "模式"
+  },
+  "permissionNotice": {
+    "message": "有網站還沒授權，提醒不會出現。"
+  },
+  "grantAll": {
+    "message": "授權清單中的網站"
+  },
+  "blockedSites": {
+    "message": "限制的網站"
+  },
+  "siteCountUnit": {
+    "message": "個"
+  },
+  "targetInputLabel": {
+    "message": "要加入的網域或網址"
+  },
+  "targetPlaceholder": {
+    "message": "reddit.com 或完整網址…"
+  },
+  "add": {
+    "message": "新增"
+  },
+  "addCurrent": {
+    "message": "加入目前的網站"
+  },
+  "limitHeading": {
+    "message": "每次放行的時間"
+  },
+  "minutesUnit": {
+    "message": "分鐘"
+  },
+  "save": {
+    "message": "儲存"
+  },
+  "notGranted": {
+    "message": "尚未授權"
+  },
+  "grant": {
+    "message": "授權"
+  },
+  "remove": {
+    "message": "移除"
+  },
+  "noTargets": {
+    "message": "還沒有限制的網站。"
+  },
+  "added": {
+    "message": "已新增 $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "addedNotGranted": {
+    "message": "已新增 $p1$，但還沒有授權。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "removed": {
+    "message": "已移除 $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "undo": {
+    "message": "復原"
+  },
+  "grantedToast": {
+    "message": "已授權，提醒功能啟用了。"
+  },
+  "notGrantedToast": {
+    "message": "沒有取得授權。"
+  },
+  "limitSaved": {
+    "message": "已設定為 $p1$ 分鐘後自動關閉。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "reasonResearch": {
+    "message": "查資料"
+  },
+  "reasonMessages": {
+    "message": "回訊息"
+  },
+  "reasonWork": {
+    "message": "工作需要"
+  },
+  "reasonBreak": {
+    "message": "休息一下"
+  },
+  "csvTime": {
+    "message": "時間"
+  },
+  "csvSite": {
+    "message": "網站"
+  },
+  "csvReason": {
+    "message": "理由"
+  },
+  "reasonsHeading": {
+    "message": "解鎖理由"
+  },
+  "noRecords": {
+    "message": "還沒有紀錄。"
+  },
+  "reasonsCount": {
+    "message": "共 $p1$ 筆，這裡只列最新 $p2$ 筆。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "reasonsCopied": {
+    "message": "已複製 $p1$ 筆理由。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "copyFailed": {
+    "message": "複製失敗，請再試一次。"
+  },
+  "copyAll": {
+    "message": "複製全部"
+  },
+  "pressAgainToClear": {
+    "message": "再按一次清除"
+  },
+  "clear": {
+    "message": "清除"
+  },
+  "reasonsCleared": {
+    "message": "已清除理由紀錄。"
+  },
+  "requireReason": {
+    "message": "繼續前要寫理由"
+  },
+  "reasonPlaceholder": {
+    "message": "例如：查明天的天氣…"
+  },
+  "reasonQuestion": {
+    "message": "為什麼現在要打開？"
+  },
+  "reasonTooShort": {
+    "message": "請先寫下理由，至少 $p1$ 個字。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "restRange": {
+    "message": "休息時間請選 $p1$ 到 $p2$ 分鐘。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "alreadyResting": {
+    "message": "已經在休息了。"
+  },
+  "noBreaksLeft": {
+    "message": "今天的休息次數用完了。"
+  },
+  "dailyBreaksRange": {
+    "message": "每天的休息次數請設在 0 到 $p1$ 次。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "restPill": {
+    "message": "休息中，還剩 "
+  },
+  "restHeading": {
+    "message": "休息模式"
+  },
+  "restNote": {
+    "message": "這段時間不會跳出提醒。"
+  },
+  "restUntil": {
+    "message": "休息到 $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "restEnded": {
+    "message": "休息結束了。"
+  },
+  "endEarly": {
+    "message": "提早結束"
+  },
+  "restLengthLabel": {
+    "message": "休息多久"
+  },
+  "restStarted": {
+    "message": "開始休息 $p1$ 分鐘。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "startRest": {
+    "message": "開始休息"
+  },
+  "noBreaksLeftShort": {
+    "message": "今天的次數用完了"
+  },
+  "breaksLeft": {
+    "message": "今天還剩 $p1$ 次",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "dailyLimitSet": {
+    "message": "每天最多休息 $p1$ 次。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "breaksPerDay": {
+    "message": "每天最多休息"
+  },
+  "today": {
+    "message": "今天"
+  },
+  "statShown": {
+    "message": "打開次數"
+  },
+  "statMinutes": {
+    "message": "使用分鐘"
+  },
+  "statContinued": {
+    "message": "繼續"
+  },
+  "statClosed": {
+    "message": "關掉"
+  },
+  "statAutoClosed": {
+    "message": "時間到自動關閉"
+  },
+  "dayTitle": {
+    "message": "$p1$：$p2$ 次",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "chartSpoken": {
+    "message": "最近 $p1$ 天每天的打開次數：$p2$。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "chartSpokenDay": {
+    "message": "$p1$ $p2$ 次",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "todaySuffix": {
+    "message": "（今天）"
+  },
+  "lastDays": {
+    "message": "最近 $p1$ 天",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sitesToday": {
+    "message": "今天各網站"
+  },
+  "nothingToday": {
+    "message": "今天還沒有紀錄。"
+  },
+  "clearStats": {
+    "message": "清除統計"
+  },
+  "confirmClearStats": {
+    "message": "再按一次確認清除"
+  },
+  "statsCleared": {
+    "message": "已清除統計。"
+  },
+  "visitNumber": {
+    "message": "第 $p1$ 次",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "openedToday": {
+    "message": "今天打開"
+  },
+  "dayChip1": {
+    "message": "一"
+  },
+  "dayChip2": {
+    "message": "二"
+  },
+  "dayChip3": {
+    "message": "三"
+  },
+  "dayChip4": {
+    "message": "四"
+  },
+  "dayChip5": {
+    "message": "五"
+  },
+  "dayChip6": {
+    "message": "六"
+  },
+  "dayChip0": {
+    "message": "日"
+  },
+  "dayName": {
+    "message": "週$p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "everyDay": {
+    "message": "每天"
+  },
+  "dayRange": {
+    "message": "週$p1$到週$p2$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "modeAlways": {
+    "message": "全天"
+  },
+  "modeSchedule": {
+    "message": "指定時段"
+  },
+  "modeBudget": {
+    "message": "每日額度"
+  },
+  "strictBudgetUsed": {
+    "message": "嚴格模式：今天的 $p1$ 分鐘額度用完了。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "strictUntil": {
+    "message": "嚴格模式開啟中，$p1$ 前不能繼續。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "strictNow": {
+    "message": "嚴格模式開啟中，現在不能繼續。"
+  },
+  "pickMode": {
+    "message": "請選擇全天、指定時段或每日額度。"
+  },
+  "pickDay": {
+    "message": "請至少選一天。"
+  },
+  "pickTimes": {
+    "message": "請填開始和結束時間，例如 09:00。"
+  },
+  "sameTimes": {
+    "message": "開始和結束時間不能一樣。"
+  },
+  "budgetRange": {
+    "message": "每日額度請輸入 $p1$ 到 $p2$ 分鐘。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "scheduleSameDay": {
+    "message": "$p1$ $p2$ 到 $p3$。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      },
+      "p3": {
+        "content": "$3"
+      }
+    }
+  },
+  "scheduleOvernight": {
+    "message": "$p1$ $p2$ 到隔天 $p3$。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      },
+      "p3": {
+        "content": "$3"
+      }
+    }
+  },
+  "budgetDescribe": {
+    "message": "每天 $p1$ 分鐘。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "inSchedule": {
+    "message": "現在是限制時段，$p1$ 前不能繼續。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "notInSchedule": {
+    "message": "現在不在限制時段。"
+  },
+  "budgetBlocked": {
+    "message": "今天用了 $p1$，額度用完了，不能繼續。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "budgetOk": {
+    "message": "今天用了 $p1$，還可以繼續。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "blockedUntil": {
+    "message": "$p1$ 前不能繼續。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "modeOn": {
+    "message": "$p1$開啟中",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "offAt": {
+    "message": "$p1$ 關閉",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "strictStaysOn": {
+    "message": "嚴格模式會繼續開著。"
+  },
+  "cancel": {
+    "message": "取消"
+  },
+  "offDelay": {
+    "message": "關閉要等 $p1$ 分鐘才生效。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "offRequested": {
+    "message": "已申請關閉。"
+  },
+  "requestOff": {
+    "message": "申請關閉"
+  },
+  "strictNote": {
+    "message": "擋下時不能繼續，也不能放寬設定。"
+  },
+  "whenToBlock": {
+    "message": "什麼時候擋"
+  },
+  "weekdays": {
+    "message": "星期幾"
+  },
+  "startTime": {
+    "message": "開始時間"
+  },
+  "endTime": {
+    "message": "結束時間"
+  },
+  "timeTo": {
+    "message": "到"
+  },
+  "upToPerDay": {
+    "message": "每天最多"
+  },
+  "budgetNote": {
+    "message": "所有網站合計，用滿就擋到明天。"
+  },
+  "doubleWait": {
+    "message": "每次繼續，等待時間加倍"
+  },
+  "strictEnabled": {
+    "message": "嚴格模式開啟了。"
+  },
+  "enableStrict": {
+    "message": "開啟嚴格模式"
+  },
+  "strictLockedSettings": {
+    "message": "嚴格模式開啟中，要先關閉才能改設定。"
+  },
+  "strictAlreadyOff": {
+    "message": "嚴格模式已經關閉了。"
+  },
+  "strictNoRemove": {
+    "message": "嚴格模式開啟中，不能移除網站。"
+  },
+  "strictNoLonger": {
+    "message": "嚴格模式開啟中，不能把使用時間調長。"
+  },
+  "strictNoUnrequire": {
+    "message": "嚴格模式開啟中，不能取消必填理由。"
+  },
+  "strictNoMoreBreaks": {
+    "message": "嚴格模式開啟中，不能增加休息次數。"
+  },
+  "strictNoClearStats": {
+    "message": "嚴格模式開啟中，不能清除統計。"
+  },
+  "strictNoBreak": {
+    "message": "嚴格模式開啟中，現在不能休息。"
+  },
+  "strictHeading": {
+    "message": "嚴格模式"
+  },
+  "deleteItem": {
+    "message": "刪除「$p1$」",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "delete": {
+    "message": "刪除"
+  },
+  "todoPlaceholder": {
+    "message": "下一件要做的事…"
+  },
+  "addTodo": {
+    "message": "新增待辦"
+  },
+  "todoList": {
+    "message": "待辦清單"
+  },
+  "noTodos": {
+    "message": "還沒有待辦。"
+  },
+  "clearDone": {
+    "message": "清除已完成"
+  },
+  "doneHeading": {
+    "message": "已完成"
+  },
+  "noDone": {
+    "message": "還沒有完成的待辦。"
+  },
+  "doneCount": {
+    "message": "共 $p1$ 件，這裡只列最近完成的 $p2$ 件。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "todoEmpty": {
+    "message": "請先輸入待辦事項。"
+  },
+  "todoTooLong": {
+    "message": "待辦事項最多 $p1$ 個字。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "todoTooManyAdd": {
+    "message": "未完成的待辦最多 $p1$ 件，先完成或刪掉幾件再新增。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "todoNotFound": {
+    "message": "找不到這件待辦，可能已經刪掉了。"
+  },
+  "todoTooManyRestore": {
+    "message": "未完成的待辦最多 $p1$ 件，先完成或刪掉幾件再移回來。",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "moreTodos": {
+    "message": "還有 $p1$ 件",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  }
+}

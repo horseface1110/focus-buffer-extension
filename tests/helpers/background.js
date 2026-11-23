@@ -64,7 +64,23 @@ function loadBackground(options = {}) {
   let granted = options.granted === undefined ? "all" : new Set(options.granted);
   const calls = { registered: [], removedTabs: [], createdTabs: [], removedOrigins: [], injected: [] };
 
+  // The browser fills in _locales/<lang>/messages.json; zh_TW unless a
+  // test asks for another language.
+  const messages = JSON.parse(fs.readFileSync(path.join(EXTENSION_DIR, "_locales", options.locale || "zh_TW", "messages.json"), "utf8"));
+
   const api = {
+    i18n: {
+      getMessage(key, substitutions) {
+        const entry = messages[key];
+        if (!entry) {
+          return "";
+        }
+        const args = [].concat(substitutions === undefined ? [] : substitutions);
+        return entry.message
+          .replace(/\$(\w+)\$/g, (match, name) => (entry.placeholders && entry.placeholders[name.toLowerCase()] ? entry.placeholders[name.toLowerCase()].content : match))
+          .replace(/\$(\d)/g, (match, index) => (args[index - 1] === undefined ? "" : String(args[index - 1])));
+      }
+    },
     storage: { local: storageArea(data.local), session: storageArea(data.session), sync: storageArea(data.sync) },
     runtime: {
       onMessage: event(listeners.message),

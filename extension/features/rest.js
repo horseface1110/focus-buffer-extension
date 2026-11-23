@@ -57,16 +57,16 @@
       async "rest/start"(message, ctx) {
         const minutes = Number(message.minutes);
         if (!Number.isInteger(minutes) || minutes < MIN_MINUTES || minutes > MAX_MINUTES) {
-          throw new Error("休息時間請選 " + MIN_MINUTES + " 到 " + MAX_MINUTES + " 分鐘。");
+          throw new Error(FB.t("restRange", MIN_MINUTES, MAX_MINUTES));
         }
         const now = ctx.now;
 
         return ctx.store.update((state) => {
           if (isResting(state, now)) {
-            throw new Error("已經在休息了。");
+            throw new Error(FB.t("alreadyResting"));
           }
           if (usedToday(state, now) >= dailyLimit(state)) {
-            throw new Error("今天的休息次數用完了。");
+            throw new Error(FB.t("noBreaksLeft"));
           }
           ctx.guard("rest/start", { minutes: minutes }, state, now);
 
@@ -98,7 +98,7 @@
       async "rest/setDailyLimit"(message, ctx) {
         const limit = Number(message.limit);
         if (!Number.isInteger(limit) || limit < 0 || limit > MAX_DAILY_LIMIT) {
-          throw new Error("每天的休息次數請設在 0 到 " + MAX_DAILY_LIMIT + " 次。");
+          throw new Error(FB.t("dailyBreaksRange", MAX_DAILY_LIMIT));
         }
         const now = ctx.now;
 
@@ -130,7 +130,7 @@
         // role="timer" keeps screen readers from announcing every second.
         // The pill is a flex row, which would eat the space before the digits
         // if the words sat in it directly.
-        ctx.mount(ctx.el("div", { class: "fb-pill fb-rest-pill", role: "timer" }, ctx.el("span", {}, "休息中，還剩 ", time)));
+        ctx.mount(ctx.el("div", { class: "fb-pill fb-rest-pill", role: "timer" }, ctx.el("span", {}, FB.t("restPill"), time)));
 
         let timer = null;
         const update = () => {
@@ -173,20 +173,20 @@
           ctx.toast(done);
         };
 
-        const card = ctx.section("modes", "休息模式");
+        const card = ctx.section("modes", FB.t("restHeading"));
         card.classList.add("fb-rest");
-        card.append(el("p", { class: "muted" }, "這段時間不會跳出提醒。"));
+        card.append(el("p", { class: "muted" }, FB.t("restNote")));
 
         window.clearTimeout(popupTimer);
         popupTimer = null;
 
         if (resting) {
           card.append(
-            el("p", { class: "fb-rest-status" }, "休息到 " + FB.formatClock(until)),
+            el("p", { class: "fb-rest-status" }, FB.t("restUntil", FB.formatClock(until))),
             el(
               "button",
-              { class: "btn secondary block", type: "button", dataset: { action: "rest-stop" }, onclick: () => run("rest/stop", {}, "休息結束了。") },
-              "提早結束"
+              { class: "btn secondary block", type: "button", dataset: { action: "rest-stop" }, onclick: () => run("rest/stop", {}, FB.t("restEnded")) },
+              FB.t("endEarly")
             )
           );
           // Show the idle card again once the break is over.
@@ -207,11 +207,11 @@
                   }
                 }
               },
-              minutes + " 分鐘"
+              FB.t("minutes", minutes)
             )
           );
           card.append(
-            el("div", { class: "chips", role: "group", "aria-label": "休息多久" }, chips),
+            el("div", { class: "chips", role: "group", "aria-label": FB.t("restLengthLabel") }, chips),
             el(
               "button",
               {
@@ -219,11 +219,11 @@
                 type: "button",
                 disabled: left === 0,
                 dataset: { action: "rest-start" },
-                onclick: () => run("rest/start", { minutes: chosenMinutes }, "開始休息 " + chosenMinutes + " 分鐘。")
+                onclick: () => run("rest/start", { minutes: chosenMinutes }, FB.t("restStarted", chosenMinutes))
               },
-              "開始休息"
+              FB.t("startRest")
             ),
-            el("p", { class: "muted fb-rest-left" }, left === 0 ? "今天的次數用完了" : "今天還剩 " + left + " 次")
+            el("p", { class: "muted fb-rest-left" }, left === 0 ? FB.t("noBreaksLeftShort") : FB.t("breaksLeft", left))
           );
         }
 
@@ -235,11 +235,11 @@
           {
             class: "select",
             dataset: { action: "rest-limit" },
-            onchange: () => run("rest/setDailyLimit", { limit: Number(select.value) }, "每天最多休息 " + select.value + " 次。")
+            onchange: () => run("rest/setDailyLimit", { limit: Number(select.value) }, FB.t("dailyLimitSet", select.value))
           },
-          options.map((count) => el("option", { value: String(count), selected: count === limit }, count + " 次"))
+          options.map((count) => el("option", { value: String(count), selected: count === limit }, FB.t("times", count)))
         );
-        card.append(el("label", { class: "row fb-rest-limit" }, el("span", { class: "fb-rest-limit-label" }, "每天最多休息"), select));
+        card.append(el("label", { class: "row fb-rest-limit" }, el("span", { class: "fb-rest-limit-label" }, FB.t("breaksPerDay")), select));
       }
     }
   });

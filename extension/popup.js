@@ -20,7 +20,21 @@
     document.documentElement.classList.add("is-ipad");
   }
 
-  init().catch((error) => toast("初始化失敗：" + error.message, "error"));
+  // Static text in popup.html: data-i18n sets an element's text,
+  // data-i18n-placeholder and data-i18n-aria-label set those attributes.
+  document.documentElement.lang = FB.t("langTag");
+  document.title = FB.t("extName");
+  for (const node of document.querySelectorAll("[data-i18n]")) {
+    node.textContent = FB.t(node.dataset.i18n);
+  }
+  for (const node of document.querySelectorAll("[data-i18n-placeholder]")) {
+    node.placeholder = FB.t(node.dataset.i18nPlaceholder);
+  }
+  for (const node of document.querySelectorAll("[data-i18n-aria-label]")) {
+    node.setAttribute("aria-label", FB.t(node.dataset.i18nAriaLabel));
+  }
+
+  init().catch((error) => toast(FB.t("initFailed", error.message), "error"));
 
   async function init() {
     for (const tab of document.querySelectorAll(".tab")) {
@@ -143,20 +157,20 @@
             { class: "list-main" },
             el("span", { class: "list-title" }, target),
             // Only worth a line when something is wrong.
-            granted ? null : el("span", { class: "list-sub warn" }, "尚未授權")
+            granted ? null : el("span", { class: "list-sub warn" }, FB.t("notGranted"))
           ),
           el(
             "div",
             { class: "list-actions" },
-            granted ? null : el("button", { class: "btn small primary", type: "button", onclick: () => grant([target]) }, "授權"),
-            el("button", { class: "btn small danger", type: "button", onclick: () => removeTarget(target) }, "移除")
+            granted ? null : el("button", { class: "btn small primary", type: "button", onclick: () => grant([target]) }, FB.t("grant")),
+            el("button", { class: "btn small danger", type: "button", onclick: () => removeTarget(target) }, FB.t("remove"))
           )
         )
       );
     }
 
     if (rows.length === 0) {
-      rows.push(el("li", { class: "empty" }, "還沒有限制的網站。"));
+      rows.push(el("li", { class: "empty" }, FB.t("noTargets")));
     }
     list.replaceChildren(...rows);
     $("target-count").textContent = String(targets.length);
@@ -197,7 +211,7 @@
   async function addTarget(value) {
     const target = FB.normalizeTarget(value);
     if (!target) {
-      toast("請輸入有效的網域或網址，例如 reddit.com。", "error");
+      toast(FB.t("invalidTarget"), "error");
       return;
     }
 
@@ -215,7 +229,7 @@
     const granted = await access;
     await FB.send("sync").catch(() => {});
     await refresh();
-    toast(granted ? "已新增 " + target : "已新增 " + target + "，但還沒有授權。", granted ? "ok" : "warn");
+    toast(granted ? FB.t("added", target) : FB.t("addedNotGranted", target), granted ? "ok" : "warn");
   }
 
   async function removeTarget(target) {
@@ -227,14 +241,14 @@
     }
     await refresh();
     // Removing is immediate, so offer a way back.
-    toast("已移除 " + target, "ok", { label: "復原", run: () => addTarget(target) });
+    toast(FB.t("removed", target), "ok", { label: FB.t("undo"), run: () => addTarget(target) });
   }
 
   async function grant(targets) {
     const granted = await requestAccess(targets);
     await FB.send("sync").catch(() => {});
     await refresh();
-    toast(granted ? "已授權，提醒功能啟用了。" : "沒有取得授權。", granted ? "ok" : "warn");
+    toast(granted ? FB.t("grantedToast") : FB.t("notGrantedToast"), granted ? "ok" : "warn");
   }
 
   function onGrantAll() {
@@ -248,7 +262,7 @@
     event.preventDefault();
     try {
       const result = await FB.send("limit/set", { minutes: Number($("limit-input").value) });
-      toast("已設定為 " + result.minutes + " 分鐘後自動關閉。");
+      toast(FB.t("limitSaved", result.minutes));
     } catch (error) {
       toast(error.message, "error");
     }

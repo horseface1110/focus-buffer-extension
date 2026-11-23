@@ -26,7 +26,7 @@ the same file.
 
     // Messages from the popup or the overlay: FB.send("todos/add", { text }).
     // Return a value to resolve FB.send, throw an Error to reject it (the
-    // message is shown to the user, so write it in Chinese).
+    // message is shown to the user, so take it from FB.t, see below).
     handlers: {
       async "todos/add"(message, ctx) {
         // ctx = { store, sender, now, guard, sync }
@@ -162,3 +162,12 @@ npm run test:unit
 ```bash
 npm run test:e2e
 ```
+
+## Text
+
+Everything the user reads comes from `extension/_locales/<lang>/messages.json`
+through `FB.t(key, ...values)`; `$1`, `$2` in a message are filled from the
+values. The browser picks the language from the system, and Chinese
+(`zh_TW`) is the default. Add every new key to both `zh_TW` and `en`; a test
+fails when the two lists differ. For static text in `popup.html`, put the key
+in `data-i18n` (or `data-i18n-placeholder`, `data-i18n-aria-label`).

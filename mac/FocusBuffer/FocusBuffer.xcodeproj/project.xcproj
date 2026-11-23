@@ -67,6 +67,7 @@
             { "path": "../../../extension/background.js", "target-membership": [ "FocusBuffer Extension/resources" ] },
             { "path": "../../../extension/popup.html", "target-membership": [ "FocusBuffer Extension/resources" ] },
             { "path": "../../../extension/features", "target-membership": [ "FocusBuffer Extension/resources" ] },
+            { "path": "../../../extension/_locales", "target-membership": [ "FocusBuffer Extension/resources" ] },
             { "path": "../../../extension/overlay.css", "target-membership": [ "FocusBuffer Extension/resources" ] },
             { "path": "../../../extension/icons", "target-membership": [ "FocusBuffer Extension/resources" ] },
             { "path": "../../../extension/manifest.json", "target-membership": [ "FocusBuffer Extension/resources" ] },
