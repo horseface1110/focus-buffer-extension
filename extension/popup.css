@@ -13,7 +13,7 @@
 
 :root {
   color-scheme: light dark;
-  /* Paper and ink, square corners, one blue (shared with overlay.css). */
+  /* Paper and ink, square corners, the icon's green (shared with overlay.css). */
   --bg: #ffffff;
   --field: #ffffff;
   --sunk: #f5f4f2;
@@ -23,16 +23,16 @@
   --text-muted: #6e675f;
   --line: #dedad4;
   --line-strong: #c4bfb7;
-  --green: #2b4f8f;
-  --ink: #2b4f8f;
-  --ink-hover: #234278;
+  --green: #2d7569;
+  --ink: #2d7569;
+  --ink-hover: #22574c;
   --on-ink: #ffffff;
   --danger: #9c3a2e;
   --danger-fill: #9c3a2e;
   --danger-tint: rgba(156, 58, 46, 0.08);
   --on-danger: #ffffff;
   --warn: #8a5a22;
-  --focus: #2b4f8f;
+  --focus: #2d7569;
   --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Segoe UI", sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -49,16 +49,16 @@
     --text-muted: #9a938a;
     --line: #34312d;
     --line-strong: #4a4640;
-    --green: #8fb0ec;
-    --ink: #8fb0ec;
-    --ink-hover: #a9c3f2;
+    --green: #6fc3b3;
+    --ink: #6fc3b3;
+    --ink-hover: #8fd4c6;
     --on-ink: #141311;
     --danger: #f0a497;
     --danger-fill: #c4523f;
     --danger-tint: rgba(240, 164, 151, 0.12);
     --on-danger: #ffffff;
     --warn: #e6b877;
-    --focus: #8fb0ec;
+    --focus: #6fc3b3;
   }
 }
 

@@ -1,8 +1,8 @@
 /* overlay.css — the pause screen drawn over a listed site.
  *
- * Paper and ink: one warm white sheet, square corners, 1px rules, a single
- * blue for the thing to press. Small marks are set in monospace, the way a
- * score or a tracker labels its parts. The screen lives inside other
+ * Paper and ink: one warm white sheet, square corners, 1px rules, and the
+ * icon's green for the thing to press. Small marks are set in monospace,
+ * the way a score or a tracker labels its parts. The screen lives inside other
  * people's pages, so every rule starts with #focus-buffer-root and sets the
  * properties a host page is most likely to have touched.
  */
@@ -16,8 +16,8 @@
   --fb-muted: #6e675f;
   --fb-rule: #dedad4;
   --fb-rule-strong: #c4bfb7;
-  --fb-felt: #2b4f8f;
-  --fb-felt-hover: #234278;
+  --fb-felt: #2d7569;
+  --fb-felt-hover: #22574c;
   --fb-on-felt: #ffffff;
   --fb-danger: #9c3a2e;
   --fb-sans: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Segoe UI", sans-serif;
@@ -34,8 +34,8 @@
     --fb-muted: #9a938a;
     --fb-rule: #34312d;
     --fb-rule-strong: #4a4640;
-    --fb-felt: #8fb0ec;
-    --fb-felt-hover: #a9c3f2;
+    --fb-felt: #6fc3b3;
+    --fb-felt-hover: #8fd4c6;
     --fb-on-felt: #141311;
     --fb-danger: #f0a497;
   }
