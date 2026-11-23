@@ -1,0 +1,116 @@
+* {
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -webkit-user-drag: none;
+    cursor: default;
+}
+
+:root {
+    color-scheme: light dark;
+    --bg: #f4f6ef;
+    --text: #17231f;
+    --muted: #56645f;
+    --line: rgba(23, 35, 31, 0.12);
+    --green: #2d7569;
+    --on-green: #ffffff;
+    --tint: rgba(45, 117, 105, 0.14);
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bg: #131b18;
+        --text: #eef4ef;
+        --muted: #a9b8b0;
+        --line: rgba(238, 244, 239, 0.14);
+        --green: #6fc3b3;
+        --on-green: #10201c;
+        --tint: rgba(111, 195, 179, 0.18);
+    }
+}
+
+html {
+    height: 100%;
+    background: var(--bg);
+}
+
+body {
+    margin: 0;
+    color: var(--text);
+    font: -apple-system-body;
+    line-height: 1.5;
+}
+
+main {
+    padding: 32px 36px;
+}
+
+h1 {
+    margin: 12px 0 4px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+p {
+    margin: 0;
+}
+
+.lead {
+    color: var(--muted);
+}
+
+/* The app tells the page whether the extension is on; show one line. */
+body:not(.state-on, .state-off) :is(.state-on, .state-off),
+body.state-on :is(.state-off, .state-unknown),
+body.state-off :is(.state-on, .state-unknown) {
+    display: none;
+}
+
+.steps {
+    display: grid;
+    margin: 22px 0 22px;
+    border-top: 1px solid var(--line);
+    padding: 0;
+    list-style: none;
+}
+
+.steps li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--line);
+    padding: 11px 0;
+}
+
+.step-number {
+    display: grid;
+    flex: 0 0 26px;
+    width: 26px;
+    height: 26px;
+    place-items: center;
+    border-radius: 50%;
+    color: var(--green);
+    background: var(--tint);
+    font-size: 13px;
+    font-weight: 700;
+}
+
+button {
+    width: 100%;
+    min-height: 38px;
+    border: 0;
+    border-radius: 8px;
+    color: var(--on-green);
+    background: var(--green);
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+button:hover {
+    filter: brightness(1.06);
+}
+
+button:focus-visible {
+    outline: 3px solid var(--tint);
+    outline-offset: 2px;
+}

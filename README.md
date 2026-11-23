@@ -1,62 +1,47 @@
-# 分心緩衝器
+<div align="center">
 
-一個讓你在打開容易分心的網站前，先停下來想一下的 Chrome 擴充功能。
+<img src="extension/icons/icon-256.png" width="96" height="96" alt="先緩緩的圖示：一個逗點">
 
-它不會硬性禁止你使用網站，而是增加一點摩擦：喝一口水、看一下待辦、伸展 30 秒，再決定要不要繼續。
+# 先緩緩
 
-## 功能
+打開分心網站前，先停一下。
 
-- 預設提醒 Instagram、Facebook、YouTube。
-- 可自行新增或移除要限制的網站。
-- 可一鍵把目前網站加入限制清單。
-- 打開限制網站時，顯示全頁提醒遮罩。
-- 顯示今天在目前網站已使用幾分鐘。
-- 顯示今天在所有限制網站總共使用幾分鐘。
-- 按下「我真的要繼續」後，需要先等 10 秒。
-- 放行後會依設定時間自動關閉分頁。
-- 可在擴充功能 popup 裡設定自動關閉時間。
+![Chrome](https://img.shields.io/badge/Chrome-Manifest_V3-2d7569?logo=googlechrome&logoColor=white)
+![Safari iOS](https://img.shields.io/badge/Safari-iOS_17+-2d7569?logo=safari&logoColor=white)
+![Safari macOS](https://img.shields.io/badge/Safari-macOS_13+-2d7569?logo=safari&logoColor=white)
 
-## 安裝方式
+<img src="store-assets/screenshots/chrome/01-overlay.png" width="760" alt="在 YouTube 上出現的提醒畫面">
 
-目前沒有上架 Chrome Web Store，可以用「載入未封裝項目」的方式安裝。
+</div>
 
-1. 下載或 clone 這個專案。
-2. 打開 Chrome，進入 `chrome://extensions/`。
-3. 開啟右上角「開發人員模式」。
-4. 點「載入未封裝項目」。
-5. 選擇這個專案資料夾。
+打開清單裡的網站時，先蓋上一個提醒畫面。想繼續就等 10 秒，時間到分頁會自動關閉。不封鎖，只加一點摩擦。
 
-## 自訂限制清單
+- **待辦清單**：提醒畫面上列出還沒做完的事
+- **分心統計**：今天打開幾次、用了多久、最近七天
+- **解鎖理由**：繼續前先寫下為什麼
+- **休息模式**：幾分鐘內不跳提醒
+- **嚴格模式**：指定時段或額度用完後不能繼續
 
-點 Chrome 工具列上的「分心緩衝器」圖示，輸入網域或頁面：
+## 安裝
 
-- `reddit.com` 會限制 `reddit.com` 和它的子網域。
-- `https://example.com/path` 只會限制這個路徑開頭的頁面。
-- 「封鎖目前網站」會把目前分頁的網域加入清單。
+| 平台 | 狀態 |
+|---|---|
+| Chrome | 尚未上架，在 `chrome://extensions/` 開啟開發人員模式，「載入未封裝項目」選 `extension` 資料夾 |
+| iPhone（Safari） | App Store 審核中，自行建置見 [ios/README.md](ios/README.md) |
+| Mac（Safari） | Mac App Store 審核中，自行建置見 [mac/README.md](mac/README.md) |
 
-## 使用時間設定
+用過舊版（載入專案根目錄）的話，先移除舊版再載入 `extension`，網站清單要重新設定。
 
-點 Chrome 工具列上的「分心緩衝器」圖示，可以設定按下「我真的要繼續」後幾分鐘自動關閉分頁。預設是 5 分鐘。
+資料只存在你的裝置上，沒有帳號、沒有伺服器。詳見 [PRIVACY.md](PRIVACY.md)。
 
-## 隱私
+## 開發
 
-這個擴充功能目前不會把資料送到任何伺服器。
+```bash
+npm install
+```
 
-- 限制清單存在 Chrome 的 `storage.sync`。
-- 今日使用時間存在 Chrome 的 `storage.local`。
-- 不收集帳號、密碼、網頁內容或瀏覽內容。
-- 不使用遠端 API。
+```bash
+npm test
+```
 
-## 權限說明
-
-- `storage`：儲存限制清單、使用時間與自動關閉時間設定。
-- `tabs`：支援按下「關掉這頁」與時間到自動關閉分頁。
-- `<all_urls>`：讓擴充功能可以在你自訂的任何網站上檢查是否需要顯示提醒。沒有命中限制清單時不會顯示遮罩。
-
-## 之後可以加
-
-- 嚴格模式。
-- 待辦清單。
-- 分心次數統計。
-- 解鎖理由紀錄。
-- 休息模式。
+Chrome、iPhone、Mac 共用 `extension/` 這一份程式。功能架構見 [docs/FEATURES.md](docs/FEATURES.md)，發版流程見 [docs/RELEASING.md](docs/RELEASING.md)。

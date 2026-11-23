@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024">
+  <!-- 先緩緩 app icon: a comma, the mark that says "pause, then go on". -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3b8273"/>
+      <stop offset="1" stop-color="#22574c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1024" height="1024" fill="url(#bg)"/>
+  <path fill="#f7f4e9" d="M532 262c-104 0-186 80-186 180 0 96 74 172 170 178-18 62-62 112-128 150-22 13-12 46 14 40 172-40 316-176 316-362 0-106-82-186-186-186z"/>
+</svg>

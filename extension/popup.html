@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#f7f8f3" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="#131b18" media="(prefers-color-scheme: dark)">
+    <title>先緩緩</title>
+    <link rel="stylesheet" href="popup.css">
+    <link rel="stylesheet" href="features/stats.css">
+    <link rel="stylesheet" href="features/reasons.css">
+    <link rel="stylesheet" href="features/todos.css">
+    <link rel="stylesheet" href="features/rest.css">
+    <link rel="stylesheet" href="features/strict.css">
+  </head>
+  <body>
+    <main class="popup">
+      <header class="header">
+        <img class="brand-mark" src="icons/icon-96.png" alt="" width="28" height="28">
+        <h1 translate="no">先緩緩</h1>
+      </header>
+
+      <nav class="tabs" role="tablist" aria-label="設定分類">
+        <button class="tab" type="button" role="tab" data-tab="sites" aria-selected="true">網站</button>
+        <button class="tab" type="button" role="tab" data-tab="todos" aria-selected="false">待辦</button>
+        <button class="tab" type="button" role="tab" data-tab="stats" aria-selected="false">紀錄</button>
+        <button class="tab" type="button" role="tab" data-tab="modes" aria-selected="false">模式</button>
+      </nav>
+
+      <p class="toast" id="toast" role="status" aria-live="polite"></p>
+
+      <div class="panel" data-panel="sites" role="tabpanel">
+        <section class="notice" id="permission-card" hidden>
+          <p>有網站還沒授權，提醒不會出現。</p>
+          <button class="btn primary block" id="grant-all" type="button">授權清單中的網站</button>
+        </section>
+
+        <section class="section">
+          <div class="section-heading">
+            <h2>限制的網站</h2>
+            <span class="count"><span id="target-count">0</span> 個</span>
+          </div>
+          <ul class="list" id="target-list"></ul>
+          <form class="row" id="add-form">
+            <label class="sr-only" for="target-input">要加入的網域或網址</label>
+            <input class="input" id="target-input" name="target" type="text" inputmode="url" placeholder="reddit.com 或完整網址…" autocomplete="off" autocapitalize="none" spellcheck="false">
+            <button class="btn primary" type="submit">新增</button>
+          </form>
+          <button class="btn secondary block" id="add-current" type="button">加入目前的網站</button>
+        </section>
+
+        <section class="section">
+          <h2><label for="limit-input">每次放行的時間</label></h2>
+          <form class="row" id="limit-form">
+            <input class="input narrow" id="limit-input" name="limit" type="number" inputmode="numeric" min="1" max="180" step="1" autocomplete="off">
+            <span class="unit">分鐘</span>
+            <button class="btn secondary" type="submit">儲存</button>
+          </form>
+        </section>
+      </div>
+
+      <div class="panel" data-panel="todos" role="tabpanel" hidden></div>
+      <div class="panel" data-panel="stats" role="tabpanel" hidden></div>
+      <div class="panel" data-panel="modes" role="tabpanel" hidden></div>
+    </main>
+
+    <script src="core.js"></script>
+    <script src="features/stats.js"></script>
+    <script src="features/reasons.js"></script>
+    <script src="features/todos.js"></script>
+    <script src="features/rest.js"></script>
+    <script src="features/strict.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

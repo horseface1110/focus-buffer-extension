@@ -1,0 +1,382 @@
+/* overlay.css — the pause screen drawn over a listed site.
+ *
+ * One flat column on one background: no panel, no boxes inside boxes.
+ * Groups are separated by space and a hairline. The screen lives inside
+ * other people's pages, so every rule starts with #focus-buffer-root and
+ * sets the properties a host page is most likely to have touched.
+ */
+
+#focus-buffer-root {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 32px 24px;
+  padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  color: #17231f;
+  background: #f4f6ef;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: left;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+#focus-buffer-root *,
+#focus-buffer-root *::before,
+#focus-buffer-root *::after {
+  box-sizing: border-box;
+  letter-spacing: 0;
+}
+
+/* Shown for a moment before the service worker answers. */
+#focus-buffer-root.fb-cover > * {
+  display: none;
+}
+
+html.focus-buffer-locked,
+html.focus-buffer-locked body {
+  overflow: hidden !important;
+}
+
+/* The column. margin: auto centres it and still lets a tall one scroll
+   from its top edge. */
+#focus-buffer-root .fb-shell {
+  width: 100%;
+  max-width: 520px;
+  margin: auto;
+  padding: 0;
+}
+
+#focus-buffer-root .fb-panel {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+}
+
+/* ---- Intro --------------------------------------------------------- */
+
+#focus-buffer-root h1 {
+  margin: 0;
+  padding: 0;
+  color: #17231f;
+  font-family: inherit;
+  font-size: clamp(26px, 5vw, 36px);
+  font-weight: 800;
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+#focus-buffer-root .fb-slot:empty {
+  display: none;
+}
+
+#focus-buffer-root .fb-slot[data-slot="top"] {
+  margin-top: 12px;
+}
+
+/* ---- Today's numbers: plain figures, no tiles ---------------------- */
+
+#focus-buffer-root .fb-usage {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 14px 0 0;
+  padding: 0;
+}
+
+/* Number over its label, so three figures still fit one row on a phone. */
+#focus-buffer-root .fb-usage > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  min-width: 0;
+}
+
+#focus-buffer-root .fb-usage-number {
+  color: #17231f;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 1.3;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+#focus-buffer-root .fb-usage-label {
+  color: #52615c;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+#focus-buffer-root .fb-slot[data-slot="stats"] {
+  margin-top: 4px;
+}
+
+/* ---- Small tasks: a numbered list ---------------------------------- */
+
+#focus-buffer-root .fb-actions-list {
+  display: grid;
+  gap: 2px;
+  margin: 18px 0 0;
+  border-top: 1px solid rgba(23, 35, 31, 0.14);
+  padding: 12px 0 0;
+}
+
+#focus-buffer-root .fb-task {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 36px;
+  margin: 0;
+  padding: 4px 0;
+  color: #22312d;
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+#focus-buffer-root .fb-task-mark {
+  display: inline-grid;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  color: #2d7569;
+  background: rgba(45, 117, 105, 0.14);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+#focus-buffer-root .fb-task-label {
+  min-width: 0;
+  flex: 1;
+}
+
+#focus-buffer-root .fb-slot[data-slot="tasks"] {
+  margin-top: 8px;
+}
+
+/* ---- Form slot and buttons ----------------------------------------- */
+
+#focus-buffer-root .fb-slot[data-slot="form"] {
+  margin-top: 16px;
+  border-top: 1px solid rgba(23, 35, 31, 0.14);
+  padding-top: 16px;
+}
+
+#focus-buffer-root .fb-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 24px 0 0;
+}
+
+#focus-buffer-root .fb-button {
+  flex: 1 1 180px;
+  min-height: 48px;
+  margin: 0;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 0 18px;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#focus-buffer-root .fb-button:focus-visible {
+  outline: 3px solid rgba(45, 117, 105, 0.45);
+  outline-offset: 3px;
+}
+
+#focus-buffer-root .fb-button-primary {
+  color: #ffffff;
+  background: #17231f;
+}
+
+#focus-buffer-root .fb-button-primary:hover {
+  background: #2f403a;
+}
+
+#focus-buffer-root .fb-button-secondary {
+  color: #17231f;
+  border-color: rgba(23, 35, 31, 0.28);
+  background: transparent;
+}
+
+#focus-buffer-root .fb-button-secondary:hover {
+  background: rgba(45, 117, 105, 0.1);
+}
+
+#focus-buffer-root .fb-button:disabled {
+  cursor: default;
+  opacity: 0.6;
+}
+
+#focus-buffer-root .fb-status {
+  min-height: 22px;
+  margin: 12px 0 0;
+  color: #52615c;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#focus-buffer-root .fb-status:empty {
+  display: none;
+}
+
+#focus-buffer-root .fb-slot[data-slot="bottom"] {
+  margin-top: 12px;
+}
+
+/* ---- Pieces the feature files share -------------------------------- */
+
+#focus-buffer-root .fb-note {
+  margin: 0;
+  color: #52615c;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#focus-buffer-root .fb-note strong {
+  color: #17231f;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+#focus-buffer-root .fb-field-label {
+  display: block;
+  margin: 0 0 10px;
+  color: #17231f;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+#focus-buffer-root .fb-input {
+  display: block;
+  width: 100%;
+  min-height: 46px;
+  margin: 0;
+  border: 1px solid rgba(23, 35, 31, 0.28);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #17231f;
+  background: #ffffff;
+  font: inherit;
+  /* 16px keeps iOS Safari from zooming in on focus. */
+  font-size: 16px;
+  line-height: 1.4;
+}
+
+#focus-buffer-root .fb-input:focus-visible {
+  outline: 3px solid rgba(45, 117, 105, 0.45);
+  outline-offset: 2px;
+}
+
+#focus-buffer-root .fb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+#focus-buffer-root .fb-chip {
+  min-height: 36px;
+  margin: 0;
+  border: 1px solid rgba(23, 35, 31, 0.24);
+  border-radius: 999px;
+  padding: 0 14px;
+  color: #22312d;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+#focus-buffer-root .fb-chip:hover {
+  background: rgba(45, 117, 105, 0.1);
+}
+
+#focus-buffer-root .fb-chip:focus-visible {
+  outline: 3px solid rgba(45, 117, 105, 0.45);
+  outline-offset: 2px;
+}
+
+#focus-buffer-root .fb-chip[aria-pressed="true"] {
+  color: #ffffff;
+  border-color: #2d7569;
+  background: #2d7569;
+}
+
+#focus-buffer-root .fb-error {
+  margin: 8px 0 0;
+  color: #8f332b;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#focus-buffer-root .fb-error:empty {
+  display: none;
+}
+
+@media (max-width: 520px) {
+  #focus-buffer-root {
+    padding: 24px 20px;
+    padding-top: calc(24px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  }
+
+  #focus-buffer-root .fb-button {
+    flex-basis: 100%;
+  }
+}
+
+/* ---- Small UI a feature can show while the page is usable ----------- */
+
+#focus-buffer-page {
+  position: fixed;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 2147483646;
+  display: grid;
+  gap: 8px;
+  justify-items: end;
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  pointer-events: none;
+}
+
+#focus-buffer-page > * {
+  pointer-events: auto;
+}
+
+#focus-buffer-page .fb-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  border-radius: 999px;
+  padding: 0 14px;
+  color: #ffffff;
+  background: rgba(23, 35, 31, 0.88);
+  box-shadow: 0 6px 20px rgba(23, 35, 31, 0.25);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+}

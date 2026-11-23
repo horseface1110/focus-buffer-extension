@@ -1,0 +1,14 @@
+// Local.xcconfig — who is building. Copy this file to Local.xcconfig (same
+// folder, gitignored) and fill it in. The scripts in scripts/ pass it to
+// xcodebuild; nothing here is committed.
+
+// Your 10-character Apple Team ID (Xcode ▸ Settings ▸ Accounts, or
+// developer.apple.com/account ▸ Membership). A free Personal Team is enough
+// to run on your own iPhone; TestFlight and the App Store need a paid one.
+DEVELOPMENT_TEAM = YOUR_TEAM_ID
+
+// Bundle IDs are unique per Apple team. The project defaults to
+// com.ncchen.focusbuffer, which belongs to the publishing account. Anyone
+// else building this must pick their own; the extension becomes
+// "<this>.Extension" automatically.
+// FOCUSBUFFER_BUNDLE_ID = com.yourname.focusbuffer
