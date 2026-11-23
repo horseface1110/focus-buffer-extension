@@ -13,45 +13,52 @@
 
 :root {
   color-scheme: light dark;
-  --bg: #f7f8f3;
+  /* Paper and ink, square corners, one blue (shared with overlay.css). */
+  --bg: #ffffff;
   --field: #ffffff;
-  --tint: rgba(45, 117, 105, 0.12);
-  --text: #17231f;
-  --text-muted: #56645f;
-  --line: rgba(23, 35, 31, 0.12);
-  --line-strong: rgba(23, 35, 31, 0.26);
-  --green: #2d7569;
-  --ink: #17231f;
-  --ink-hover: #2f403a;
+  --sunk: #f5f4f2;
+  --tint: #f5f4f2;
+  --text: #1d1a17;
+  --text-soft: #48423c;
+  --text-muted: #6e675f;
+  --line: #dedad4;
+  --line-strong: #c4bfb7;
+  --green: #2b4f8f;
+  --ink: #2b4f8f;
+  --ink-hover: #234278;
   --on-ink: #ffffff;
-  --danger: #a3372d;
-  --danger-fill: #b3382c;
-  --danger-tint: rgba(163, 55, 45, 0.1);
+  --danger: #9c3a2e;
+  --danger-fill: #9c3a2e;
+  --danger-tint: rgba(156, 58, 46, 0.08);
   --on-danger: #ffffff;
   --warn: #8a5a22;
-  --focus: rgba(45, 117, 105, 0.45);
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --focus: #2b4f8f;
+  --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-family: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #131b18;
-    --field: #1c2622;
-    --tint: rgba(111, 195, 179, 0.16);
-    --text: #eef4ef;
-    --text-muted: #a9b8b0;
-    --line: rgba(238, 244, 239, 0.14);
-    --line-strong: rgba(238, 244, 239, 0.3);
-    --green: #6fc3b3;
-    --ink: #eef4ef;
-    --ink-hover: #ffffff;
-    --on-ink: #131b18;
-    --danger: #ffb0a4;
-    --danger-fill: #d9483a;
-    --danger-tint: rgba(255, 176, 164, 0.14);
+    --bg: #141311;
+    --field: #141311;
+    --sunk: #1d1c19;
+    --tint: #1d1c19;
+    --text: #ece8e2;
+    --text-soft: #c9c3bb;
+    --text-muted: #9a938a;
+    --line: #34312d;
+    --line-strong: #4a4640;
+    --green: #8fb0ec;
+    --ink: #8fb0ec;
+    --ink-hover: #a9c3f2;
+    --on-ink: #141311;
+    --danger: #f0a497;
+    --danger-fill: #c4523f;
+    --danger-tint: rgba(240, 164, 151, 0.12);
     --on-danger: #ffffff;
     --warn: #e6b877;
-    --focus: rgba(111, 195, 179, 0.55);
+    --focus: #8fb0ec;
   }
 }
 
@@ -167,50 +174,59 @@ ul {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
+  margin: 2px 0 14px;
 }
 
 .brand-mark {
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
-  border-radius: 7px;
+  display: none;
 }
 
+/* The wordmark, as on the pause screen: 先緩緩. */
 h1 {
-  font-size: 17px;
-  font-weight: 800;
+  font-size: 19px;
+  font-weight: 600;
   line-height: 1.2;
+  letter-spacing: -0.04em;
 }
 
+h1::after {
+  content: ".";
+}
+
+/* A segmented control: one ruled box, the chosen tab filled. */
 .tabs {
   display: flex;
-  gap: 2px;
-  border-bottom: 1px solid var(--line);
+  border: 1px solid var(--line);
+  background: var(--sunk);
 }
 
 .tab {
   flex: 1;
-  min-height: 40px;
-  margin-bottom: -1px;
+  min-height: 34px;
   border: 0;
-  border-bottom: 2px solid transparent;
   padding: 0 4px;
-  color: var(--text-muted);
+  color: var(--text-soft);
   background: none;
   font: inherit;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
   touch-action: manipulation;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+
+.tab + .tab {
+  border-left: 1px solid var(--line);
 }
 
 .tab:hover {
   color: var(--text);
+  background: var(--bg);
 }
 
 .tab[aria-selected="true"] {
-  color: var(--text);
-  border-bottom-color: var(--green);
+  color: var(--on-ink);
+  background: var(--ink);
 }
 
 /* ---- Sections -------------------------------------------------------- */
@@ -227,14 +243,14 @@ h1 {
 
 .section h2 {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.3;
 }
 
 .section h3 {
   color: var(--text-muted);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .section-heading {
@@ -261,9 +277,10 @@ h1 {
    here stretched to several times its height. */
 .notice {
   margin-top: 14px;
-  border-radius: 10px;
+  border: 1px solid var(--line);
+  border-left: 2px solid var(--ink);
   padding: 12px;
-  background: var(--tint);
+  background: var(--sunk);
 }
 
 .notice .btn {
@@ -293,8 +310,10 @@ h1 {
   flex: 1;
   height: 40px;
   border: 1px solid var(--line-strong);
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0 10px;
+  -webkit-appearance: none;
+  appearance: none;
   color: var(--text);
   background: var(--field);
   font: inherit;
@@ -316,13 +335,14 @@ h1 {
   flex: 0 0 auto;
   min-height: 40px;
   border: 1px solid transparent;
-  border-radius: 8px;
+  border-radius: 0;
   padding: 0 14px;
   font: inherit;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   cursor: pointer;
   touch-action: manipulation;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
 .btn.block {
@@ -337,21 +357,25 @@ h1 {
 
 .btn.primary {
   color: var(--on-ink);
+  border-color: var(--ink);
   background: var(--ink);
 }
 
 .btn.primary:hover {
+  border-color: var(--ink-hover);
   background: var(--ink-hover);
 }
 
 .btn.secondary {
-  color: var(--text);
+  color: var(--text-soft);
   border-color: var(--line-strong);
   background: none;
 }
 
 .btn.secondary:hover {
-  background: var(--tint);
+  color: var(--text);
+  border-color: var(--text);
+  background: var(--sunk);
 }
 
 /* Destructive actions are plain text: present, but not shouting. */
@@ -393,8 +417,19 @@ h1 {
 .tab:focus-visible,
 .chip:focus-visible,
 .switch input:focus-visible {
-  outline: 3px solid var(--focus);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
+}
+
+.input:focus,
+.select:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
 }
 
 .chips {
@@ -405,20 +440,22 @@ h1 {
 
 .chip {
   min-height: 34px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
+  border: 1px solid var(--line);
+  border-radius: 0;
   padding: 0 12px;
-  color: var(--text);
+  color: var(--text-soft);
   background: none;
   font: inherit;
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
   touch-action: manipulation;
 }
 
 .chip:hover {
-  background: var(--tint);
+  color: var(--text);
+  border-color: var(--line-strong);
+  background: var(--sunk);
 }
 
 .chip[aria-pressed="true"] {
@@ -442,7 +479,7 @@ h1 {
 /* A switch that stands in for a section heading. */
 .switch-heading {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .switch input {
@@ -451,7 +488,6 @@ h1 {
   width: 20px;
   height: 20px;
   margin: 0;
-  accent-color: var(--green);
 }
 
 /* ---- Lists: plain rows with a hairline between them ------------------ */
@@ -483,7 +519,7 @@ h1 {
 
 .list-title {
   overflow-wrap: anywhere;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .list-sub {
@@ -526,7 +562,8 @@ h1 {
 
 .figure-value {
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 600;
+  letter-spacing: -0.01em;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
 }
@@ -544,10 +581,11 @@ h1 {
   justify-content: space-between;
   gap: 10px;
   margin: 10px 0 0;
-  border-radius: 8px;
+  border-radius: 0;
+  border: 1px solid var(--line);
   padding: 8px 12px;
   color: var(--text);
-  background: var(--tint);
+  background: var(--sunk);
   font-size: 13px;
 }
 
@@ -585,4 +623,66 @@ h1 {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
+}
+
+/* ---- Drawn controls: square, the same in every browser --------------- */
+
+/* appearance: none above drops the native arrow; draw one. */
+.select {
+  padding-right: 28px;
+  background-image: linear-gradient(45deg, transparent 50%, var(--text-muted) 50%), linear-gradient(135deg, var(--text-muted) 50%, transparent 50%);
+  background-position: calc(100% - 15px) 50%, calc(100% - 10px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+.switch input,
+.todos-check input {
+  position: relative;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: var(--field);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
+}
+
+.switch input {
+  width: 18px;
+  height: 18px;
+}
+
+.todos-check input {
+  width: 16px;
+  height: 16px;
+  flex-basis: 16px;
+}
+
+.switch:hover input,
+.todos-check:hover input {
+  border-color: var(--text-soft);
+}
+
+.switch input:checked,
+.todos-check input:checked {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+
+.switch input:checked::after,
+.todos-check input:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--on-ink);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.switch input:checked::after {
+  left: 5px;
+  top: 2px;
 }

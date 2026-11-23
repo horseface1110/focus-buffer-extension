@@ -1,10 +1,45 @@
 /* overlay.css — the pause screen drawn over a listed site.
  *
- * One flat column on one background: no panel, no boxes inside boxes.
- * Groups are separated by space and a hairline. The screen lives inside
- * other people's pages, so every rule starts with #focus-buffer-root and
- * sets the properties a host page is most likely to have touched.
+ * Paper and ink: one warm white sheet, square corners, 1px rules, a single
+ * blue for the thing to press. Small marks are set in monospace, the way a
+ * score or a tracker labels its parts. The screen lives inside other
+ * people's pages, so every rule starts with #focus-buffer-root and sets the
+ * properties a host page is most likely to have touched.
  */
+
+#focus-buffer-root,
+#focus-buffer-page {
+  --fb-paper: #ffffff;
+  --fb-sunk: #f5f4f2;
+  --fb-ink: #1d1a17;
+  --fb-ink-soft: #48423c;
+  --fb-muted: #6e675f;
+  --fb-rule: #dedad4;
+  --fb-rule-strong: #c4bfb7;
+  --fb-felt: #2b4f8f;
+  --fb-felt-hover: #234278;
+  --fb-on-felt: #ffffff;
+  --fb-danger: #9c3a2e;
+  --fb-sans: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "PingFang TC", "Noto Sans TC", "Segoe UI", sans-serif;
+  --fb-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+}
+
+@media (prefers-color-scheme: dark) {
+  #focus-buffer-root,
+  #focus-buffer-page {
+    --fb-paper: #141311;
+    --fb-sunk: #1d1c19;
+    --fb-ink: #ece8e2;
+    --fb-ink-soft: #c9c3bb;
+    --fb-muted: #9a938a;
+    --fb-rule: #34312d;
+    --fb-rule-strong: #4a4640;
+    --fb-felt: #8fb0ec;
+    --fb-felt-hover: #a9c3f2;
+    --fb-on-felt: #141311;
+    --fb-danger: #f0a497;
+  }
+}
 
 #focus-buffer-root {
   position: fixed;
@@ -13,17 +48,18 @@
   display: flex;
   box-sizing: border-box;
   margin: 0;
-  padding: 32px 24px;
-  padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  padding: 40px 24px;
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
   overscroll-behavior: contain;
-  color: #17231f;
-  background: #f4f6ef;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: var(--fb-ink);
+  background: var(--fb-paper);
+  font-family: var(--fb-sans);
   font-size: 16px;
   font-weight: 400;
-  line-height: 1.5;
+  line-height: 1.65;
   text-align: left;
+  -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: transparent;
 }
@@ -49,9 +85,21 @@ html.focus-buffer-locked body {
    from its top edge. */
 #focus-buffer-root .fb-shell {
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
   margin: auto;
   padding: 0;
+}
+
+/* The wordmark, set like a signature above the sheet. */
+#focus-buffer-root .fb-shell::before {
+  content: "先緩緩.";
+  display: block;
+  margin: 0 0 28px;
+  color: var(--fb-ink);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.04em;
 }
 
 #focus-buffer-root .fb-panel {
@@ -66,11 +114,12 @@ html.focus-buffer-locked body {
 #focus-buffer-root h1 {
   margin: 0;
   padding: 0;
-  color: #17231f;
+  color: var(--fb-ink);
   font-family: inherit;
-  font-size: clamp(26px, 5vw, 36px);
-  font-weight: 800;
-  line-height: 1.2;
+  font-size: clamp(28px, 5vw, 40px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
   text-wrap: balance;
 }
 
@@ -82,83 +131,109 @@ html.focus-buffer-locked body {
   margin-top: 12px;
 }
 
-/* ---- Today's numbers: plain figures, no tiles ---------------------- */
+/* ---- Today's numbers: one ruled strip, cells split by hairlines ------ */
 
 #focus-buffer-root .fb-usage {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px 28px;
-  margin: 14px 0 0;
+  margin: 24px 0 0;
+  border: 1px solid var(--fb-rule);
   padding: 0;
+  background: var(--fb-sunk);
 }
 
-/* Number over its label, so three figures still fit one row on a phone. */
+/* Label over its number. */
 #focus-buffer-root .fb-usage > div {
   display: flex;
-  flex-direction: column;
-  gap: 0;
+  flex: 1 1 0;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 2px;
   min-width: 0;
+  padding: 10px 14px 11px;
+}
+
+#focus-buffer-root .fb-usage > div + div {
+  border-left: 1px solid var(--fb-rule);
 }
 
 #focus-buffer-root .fb-usage-number {
-  color: #17231f;
-  font-size: 17px;
-  font-weight: 800;
+  color: var(--fb-ink);
+  font-size: 18px;
+  font-weight: 600;
   line-height: 1.3;
+  letter-spacing: -0.01em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
 }
 
 #focus-buffer-root .fb-usage-label {
-  color: #52615c;
-  font-size: 14px;
+  color: var(--fb-muted);
+  font-size: 12px;
   line-height: 1.4;
+  white-space: nowrap;
 }
 
 #focus-buffer-root .fb-slot[data-slot="stats"] {
   margin-top: 4px;
 }
 
-/* ---- Small tasks: a numbered list ---------------------------------- */
+/* ---- Small tasks: a ruled list with [01] marks ----------------------- */
 
 #focus-buffer-root .fb-actions-list {
   display: grid;
-  gap: 2px;
-  margin: 18px 0 0;
-  border-top: 1px solid rgba(23, 35, 31, 0.14);
-  padding: 12px 0 0;
+  gap: 0;
+  margin: 28px 0 0;
+  border-top: 1px solid var(--fb-ink);
+  padding: 0;
 }
 
 #focus-buffer-root .fb-task {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 36px;
+  align-items: baseline;
+  gap: 14px;
+  min-height: 48px;
   margin: 0;
-  padding: 4px 0;
-  color: #22312d;
+  border-bottom: 1px solid var(--fb-rule);
+  padding: 12px 0;
+  color: var(--fb-ink);
   font-size: 16px;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
+/* The core writes 1, 2, 3; shown as [01], [02], [03]. */
 #focus-buffer-root .fb-task-mark {
-  display: inline-grid;
-  flex: 0 0 24px;
-  width: 24px;
-  height: 24px;
-  place-items: center;
-  border-radius: 50%;
-  color: #2d7569;
-  background: rgba(45, 117, 105, 0.14);
-  font-size: 13px;
-  font-weight: 800;
+  display: inline-block;
+  flex: 0 0 auto;
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  color: var(--fb-muted);
+  background: none;
+  font-family: var(--fb-mono);
+  font-size: 12px;
+  font-weight: 600;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+}
+
+#focus-buffer-root .fb-task-mark::before {
+  content: "[0";
+}
+
+#focus-buffer-root .fb-task-mark::after {
+  content: "]";
 }
 
 #focus-buffer-root .fb-task-label {
   min-width: 0;
   flex: 1;
+}
+
+/* The to-dos sit inside the second task's band; its rule moves below
+   the list (todos.css). */
+#focus-buffer-root .fb-task:has(+ .fb-todos) {
+  border-bottom: 0;
+  padding-bottom: 4px;
 }
 
 #focus-buffer-root .fb-slot[data-slot="tasks"] {
@@ -168,69 +243,81 @@ html.focus-buffer-locked body {
 /* ---- Form slot and buttons ----------------------------------------- */
 
 #focus-buffer-root .fb-slot[data-slot="form"] {
-  margin-top: 16px;
-  border-top: 1px solid rgba(23, 35, 31, 0.14);
-  padding-top: 16px;
+  margin-top: 28px;
+  border-top: 0;
+  padding-top: 0;
 }
 
 #focus-buffer-root .fb-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 24px 0 0;
+  margin: 28px 0 0;
 }
 
 #focus-buffer-root .fb-button {
   flex: 1 1 180px;
-  min-height: 48px;
+  min-height: 50px;
   margin: 0;
   border: 1px solid transparent;
-  border-radius: 10px;
+  border-radius: 0;
   padding: 0 18px;
+  box-shadow: none;
   font: inherit;
   font-size: 16px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   text-align: center;
+  text-transform: none;
+  font-variant-numeric: tabular-nums;
   cursor: pointer;
   touch-action: manipulation;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
 #focus-buffer-root .fb-button:focus-visible {
-  outline: 3px solid rgba(45, 117, 105, 0.45);
+  outline: 2px solid var(--fb-felt);
   outline-offset: 3px;
 }
 
 #focus-buffer-root .fb-button-primary {
-  color: #ffffff;
-  background: #17231f;
+  color: var(--fb-on-felt);
+  border-color: var(--fb-felt);
+  background: var(--fb-felt);
 }
 
 #focus-buffer-root .fb-button-primary:hover {
-  background: #2f403a;
+  border-color: var(--fb-felt-hover);
+  background: var(--fb-felt-hover);
 }
 
 #focus-buffer-root .fb-button-secondary {
-  color: #17231f;
-  border-color: rgba(23, 35, 31, 0.28);
+  color: var(--fb-ink-soft);
+  border-color: var(--fb-rule-strong);
   background: transparent;
 }
 
 #focus-buffer-root .fb-button-secondary:hover {
-  background: rgba(45, 117, 105, 0.1);
+  color: var(--fb-ink);
+  border-color: var(--fb-ink);
+  background: var(--fb-sunk);
 }
 
-#focus-buffer-root .fb-button:disabled {
+#focus-buffer-root .fb-button:disabled,
+#focus-buffer-root .fb-button:disabled:hover {
+  color: var(--fb-muted);
+  border-color: var(--fb-rule);
+  background: var(--fb-sunk);
   cursor: default;
-  opacity: 0.6;
+  opacity: 1;
 }
 
 #focus-buffer-root .fb-status {
   min-height: 22px;
-  margin: 12px 0 0;
-  color: #52615c;
+  margin: 14px 0 0;
+  color: var(--fb-muted);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 #focus-buffer-root .fb-status:empty {
@@ -245,88 +332,105 @@ html.focus-buffer-locked body {
 
 #focus-buffer-root .fb-note {
   margin: 0;
-  color: #52615c;
+  color: var(--fb-muted);
   font-size: 14px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
 #focus-buffer-root .fb-note strong {
-  color: #17231f;
-  font-weight: 800;
+  color: var(--fb-ink);
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
 #focus-buffer-root .fb-field-label {
   display: block;
-  margin: 0 0 10px;
-  color: #17231f;
+  margin: 0 0 12px;
+  color: var(--fb-ink);
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.4;
 }
 
 #focus-buffer-root .fb-input {
   display: block;
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
   margin: 0;
-  border: 1px solid rgba(23, 35, 31, 0.28);
-  border-radius: 10px;
-  padding: 10px 12px;
-  color: #17231f;
-  background: #ffffff;
+  border: 1px solid var(--fb-rule-strong);
+  border-radius: 0;
+  padding: 10px 14px;
+  box-shadow: none;
+  color: var(--fb-ink);
+  background: var(--fb-paper);
   font: inherit;
   /* 16px keeps iOS Safari from zooming in on focus. */
   font-size: 16px;
   line-height: 1.4;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+#focus-buffer-root .fb-input::placeholder {
+  color: var(--fb-muted);
+  opacity: 1;
+}
+
+#focus-buffer-root .fb-input:focus {
+  border-color: var(--fb-felt);
+  outline: none;
 }
 
 #focus-buffer-root .fb-input:focus-visible {
-  outline: 3px solid rgba(45, 117, 105, 0.45);
-  outline-offset: 2px;
+  outline: 1px solid var(--fb-felt);
+  outline-offset: 0;
 }
 
 #focus-buffer-root .fb-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
   margin: 0 0 10px;
 }
 
 #focus-buffer-root .fb-chip {
-  min-height: 36px;
+  min-height: 34px;
   margin: 0;
-  border: 1px solid rgba(23, 35, 31, 0.24);
-  border-radius: 999px;
-  padding: 0 14px;
-  color: #22312d;
+  border: 1px solid var(--fb-rule);
+  border-radius: 0;
+  padding: 0 12px;
+  box-shadow: none;
+  color: var(--fb-ink-soft);
   background: transparent;
   font: inherit;
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
   cursor: pointer;
   touch-action: manipulation;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
 #focus-buffer-root .fb-chip:hover {
-  background: rgba(45, 117, 105, 0.1);
+  color: var(--fb-ink);
+  border-color: var(--fb-rule-strong);
+  background: var(--fb-sunk);
 }
 
 #focus-buffer-root .fb-chip:focus-visible {
-  outline: 3px solid rgba(45, 117, 105, 0.45);
+  outline: 2px solid var(--fb-felt);
   outline-offset: 2px;
 }
 
 #focus-buffer-root .fb-chip[aria-pressed="true"] {
-  color: #ffffff;
-  border-color: #2d7569;
-  background: #2d7569;
+  color: var(--fb-on-felt);
+  border-color: var(--fb-felt);
+  background: var(--fb-felt);
 }
 
 #focus-buffer-root .fb-error {
   margin: 8px 0 0;
-  color: #8f332b;
+  color: var(--fb-danger);
   font-size: 14px;
   line-height: 1.5;
 }
@@ -337,9 +441,21 @@ html.focus-buffer-locked body {
 
 @media (max-width: 520px) {
   #focus-buffer-root {
-    padding: 24px 20px;
-    padding-top: calc(24px + env(safe-area-inset-top, 0px));
-    padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+    padding: 28px 20px;
+    padding-top: calc(28px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+  }
+
+  #focus-buffer-root .fb-shell::before {
+    margin-bottom: 22px;
+  }
+
+  #focus-buffer-root .fb-usage > div {
+    padding: 9px 10px 10px;
+  }
+
+  #focus-buffer-root .fb-usage-number {
+    font-size: 16px;
   }
 
   #focus-buffer-root .fb-button {
@@ -357,7 +473,7 @@ html.focus-buffer-locked body {
   display: grid;
   gap: 8px;
   justify-items: end;
-  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: var(--fb-sans);
   pointer-events: none;
 }
 
@@ -369,14 +485,15 @@ html.focus-buffer-locked body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 34px;
-  border-radius: 999px;
-  padding: 0 14px;
-  color: #ffffff;
-  background: rgba(23, 35, 31, 0.88);
-  box-shadow: 0 6px 20px rgba(23, 35, 31, 0.25);
+  min-height: 32px;
+  border: 1px solid var(--fb-ink);
+  border-radius: 0;
+  padding: 0 12px;
+  color: var(--fb-paper);
+  background: var(--fb-ink);
+  box-shadow: 0 4px 14px rgba(29, 26, 23, 0.18);
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   line-height: 1;
   letter-spacing: 0;
 }

@@ -22,7 +22,7 @@
 .section[data-feature="stats"] .stats-tile-value {
   color: var(--text);
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.25;
   font-variant-numeric: tabular-nums;
 }
@@ -77,7 +77,7 @@
 .section[data-feature="stats"] .stats-day-count {
   color: var(--text-muted);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   line-height: 1.2;
   font-variant-numeric: tabular-nums;
 }
@@ -87,9 +87,9 @@
   flex: 0 0 auto;
   width: 60%;
   max-width: 24px;
-  border-radius: 4px 4px 0 0;
+  border-radius: 0;
   background: var(--green);
-  opacity: 0.45;
+  opacity: 0.3;
 }
 
 .section[data-feature="stats"] .stats-day-label {
@@ -106,7 +106,7 @@
 .section[data-feature="stats"] .stats-day.is-today .stats-day-count,
 .section[data-feature="stats"] .stats-day.is-today .stats-day-label {
   color: var(--text);
-  font-weight: 800;
+  font-weight: 600;
 }
 
 /* 今天各網站 */
@@ -122,7 +122,7 @@
 
 .section[data-feature="stats"] .stats-site-count {
   color: var(--text);
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .section[data-feature="stats"] .stats-site-minutes {

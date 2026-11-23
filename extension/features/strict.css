@@ -35,7 +35,7 @@
 
 .fb-strict .fb-strict-status {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .fb-strict .fb-strict-off {
@@ -44,7 +44,7 @@
 
 .fb-strict .fb-strict-off-time {
   color: var(--warn);
-  font-weight: 800;
+  font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
 
