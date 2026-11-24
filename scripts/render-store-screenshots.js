@@ -35,6 +35,8 @@ const NO_SCROLLBARS = "*{scrollbar-width:none !important}*::-webkit-scrollbar{di
 const FONT = "'PingFang TC', 'Noto Sans TC', system-ui, sans-serif";
 const GREEN = "linear-gradient(180deg, #3b8273 0%, #22574c 100%)";
 const CREAM = "#f4f6ef";
+// The extension's own paper, behind the phone's status bar.
+const PAPER = "#ffffff";
 
 // One idea per frame: what it does for you, then the screen that does it.
 const FRAMES = [
@@ -171,8 +173,8 @@ function iphoneFrame(frame, shot) {
     "</div>" +
     // The phone: bezel, island, screen.
     '<div style="position:absolute;left:50%;top:318px;width:336px;margin-left:-168px;padding:9px;border-radius:52px;background:#0d1211;box-shadow:0 30px 60px ' + colors.shadow + '">' +
-    '<div style="position:relative;overflow:hidden;border-radius:43px;background:' + CREAM + ';height:690px">' +
-    '<div style="height:40px;background:' + CREAM + '"></div>' +
+    '<div style="position:relative;overflow:hidden;border-radius:43px;background:' + PAPER + ';height:690px">' +
+    '<div style="height:40px;background:' + PAPER + '"></div>' +
     '<div style="position:absolute;top:10px;left:50%;width:86px;height:25px;margin-left:-43px;border-radius:14px;background:#0d1211"></div>' +
     '<img src="' + dataUrl(shot) + '" style="display:block;width:100%">' +
     "</div></div></body>"

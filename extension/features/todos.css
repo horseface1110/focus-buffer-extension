@@ -7,8 +7,9 @@
   display: grid;
   gap: 0;
   margin: 0;
-  /* Lines the items up with the task label above (24px mark + 12px gap). */
-  padding: 0 0 4px 36px;
+  border-bottom: 1px solid var(--fb-rule);
+  /* Lines the items up with the task label above ([01] mark + 14px gap). */
+  padding: 0 0 8px 43px;
   list-style: none;
 }
 
@@ -22,33 +23,59 @@
 #focus-buffer-root .fb-todo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 40px;
+  gap: 12px;
+  min-height: 38px;
   margin: 0;
-  padding: 4px 0;
-  color: #22312d;
-  font-size: 16px;
+  padding: 3px 0;
+  color: var(--fb-ink-soft);
+  font-size: 15px;
   font-weight: 400;
-  line-height: 1.35;
+  line-height: 1.4;
   cursor: pointer;
 }
 
+/* A square box drawn here: the system checkbox is rounded and tinted
+   differently in every browser. */
 #focus-buffer-root .fb-todo input {
-  position: static;
+  position: relative;
   display: inline-block;
-  flex: 0 0 20px;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
   margin: 0;
+  border: 1px solid var(--fb-rule-strong);
+  border-radius: 0;
+  padding: 0;
+  background: var(--fb-paper);
   opacity: 1;
-  -webkit-appearance: checkbox;
-  appearance: auto;
-  accent-color: #2d7569;
+  -webkit-appearance: none;
+  appearance: none;
   cursor: pointer;
+}
+
+#focus-buffer-root .fb-todo:hover input {
+  border-color: var(--fb-ink-soft);
+}
+
+#focus-buffer-root .fb-todo input:checked {
+  border-color: var(--fb-felt);
+  background: var(--fb-felt);
+}
+
+#focus-buffer-root .fb-todo input:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 1px;
+  width: 5px;
+  height: 9px;
+  border: solid var(--fb-on-felt);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 #focus-buffer-root .fb-todo input:focus-visible {
-  outline: 3px solid rgba(45, 117, 105, 0.45);
+  outline: 2px solid var(--fb-felt);
   outline-offset: 2px;
 }
 
@@ -59,13 +86,13 @@
 }
 
 #focus-buffer-root .fb-todo-item.is-done .fb-todo-text {
-  color: #6b7873;
+  color: var(--fb-muted);
   text-decoration: line-through;
 }
 
 #focus-buffer-root .fb-todos-more {
-  color: #52615c;
-  font-size: 14px;
+  color: var(--fb-muted);
+  font-size: 13px;
   line-height: 1.5;
 }
 
@@ -80,17 +107,17 @@
   cursor: pointer;
 }
 
+/* Drawn as a square box in popup.css. */
 .todos-check input {
-  flex: 0 0 auto;
-  width: 20px;
-  height: 20px;
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
   margin: 0;
-  accent-color: var(--green);
   cursor: pointer;
 }
 
 .todos-check input:focus-visible {
-  outline: 3px solid var(--focus);
+  outline: 2px solid var(--focus);
   outline-offset: 2px;
 }
 

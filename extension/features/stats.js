@@ -71,15 +71,15 @@
         el("span", { class: "stats-tile-label" }, label)
       );
 
-    ctx.section("stats", "今天").append(
+    ctx.section("stats", FB.t("today")).append(
       el(
         "div",
         { class: "stats-tiles" },
-        tile("shown", totals.shown, "打開次數", true),
-        tile("minutes", Math.floor(totals.seconds / 60), "使用分鐘", true),
-        tile("continued", totals.continued, "繼續"),
-        tile("closed", totals.closed, "關掉"),
-        tile("autoClosed", totals.autoClosed, "時間到自動關閉")
+        tile("shown", totals.shown, FB.t("statShown"), true),
+        tile("minutes", Math.floor(totals.seconds / 60), FB.t("statMinutes"), true),
+        tile("continued", totals.continued, FB.t("statContinued")),
+        tile("closed", totals.closed, FB.t("statClosed")),
+        tile("autoClosed", totals.autoClosed, FB.t("statAutoClosed"))
       )
     );
   }
@@ -107,7 +107,7 @@
         {
           class: "stats-day" + (item.day === today ? " is-today" : ""),
           dataset: { day: item.day, count: String(item.shown) },
-          title: item.label + "：" + item.shown + " 次"
+          title: FB.t("dayTitle", item.label, item.shown)
         },
         el("span", { class: "stats-day-plot" }, el("span", { class: "stats-day-count" }, String(item.shown)), bar),
         el("span", { class: "stats-day-label" }, item.label)
@@ -116,14 +116,13 @@
 
     // Screen readers get the same numbers as one sentence instead of
     // fourteen loose fragments.
-    const spoken =
-      "最近 " +
-      CHART_DAYS +
-      " 天每天的打開次數：" +
-      days.map((item) => item.label + (item.day === today ? "（今天）" : "") + " " + item.shown + " 次").join("、") +
-      "。";
+    const spoken = FB.t(
+      "chartSpoken",
+      CHART_DAYS,
+      days.map((item) => FB.t("chartSpokenDay", item.label + (item.day === today ? FB.t("todaySuffix") : ""), item.shown)).join(FB.t("listSeparator"))
+    );
 
-    ctx.section("stats", "最近 " + CHART_DAYS + " 天").append(
+    ctx.section("stats", FB.t("lastDays", CHART_DAYS)).append(
       el("div", { class: "stats-chart", role: "img", "aria-label": spoken }, columns)
     );
   }
@@ -141,20 +140,20 @@
           el(
             "span",
             { class: "stats-site-values" },
-            el("span", { class: "stats-site-count" }, site.shown + " 次"),
+            el("span", { class: "stats-site-count" }, FB.t("times", site.shown)),
             el("span", { class: "stats-site-minutes" }, FB.formatMinutes(site.seconds))
           )
         )
       );
 
-    ctx.section("stats", "今天各網站").append(
-      rows.length === 0 ? el("p", { class: "empty" }, "今天還沒有紀錄。") : el("ul", { class: "list stats-sites" }, rows)
+    ctx.section("stats", FB.t("sitesToday")).append(
+      rows.length === 0 ? el("p", { class: "empty" }, FB.t("nothingToday")) : el("ul", { class: "list stats-sites" }, rows)
     );
   }
 
   function renderClear(ctx) {
     const el = ctx.el;
-    const idleLabel = "清除統計";
+    const idleLabel = FB.t("clearStats");
     const button = el("button", { class: "btn destructive block stats-clear", type: "button" }, idleLabel);
     let armedAt = 0;
     let timer = null;
@@ -170,7 +169,7 @@
       if (!armedAt) {
         armedAt = Date.now();
         button.dataset.armed = "";
-        button.textContent = "再按一次確認清除";
+        button.textContent = FB.t("confirmClearStats");
         timer = window.setTimeout(disarm, CONFIRM_MS);
         return;
       }
@@ -184,7 +183,7 @@
         await ctx.send("stats/clear");
         // refresh() redraws this card, so there is nothing to reset here.
         await ctx.refresh();
-        ctx.toast("已清除統計。");
+        ctx.toast(FB.t("statsCleared"));
       } catch (error) {
         button.disabled = false;
         disarm();
@@ -248,8 +247,8 @@
         const figure = el(
           "div",
           { class: "fb-stats-line" },
-          el("span", { class: "fb-usage-number" }, "第 " + visit.siteShown + " 次"),
-          el("span", { class: "fb-usage-label" }, "今天打開")
+          el("span", { class: "fb-usage-number" }, FB.t("visitNumber", visit.siteShown)),
+          el("span", { class: "fb-usage-label" }, FB.t("openedToday"))
         );
         const usage = ctx.panel.querySelector(".fb-usage");
         if (usage) {

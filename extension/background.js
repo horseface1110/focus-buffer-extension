@@ -228,7 +228,7 @@ for (const id of FB.FEATURE_IDS) {
       }
       const verdict = feature.guard(action, payload || {}, state, now === undefined ? Date.now() : now);
       if (verdict && verdict.ok === false) {
-        throw new Error(verdict.message || "目前不能變更這個設定。");
+        throw new Error(verdict.message || FB.t("settingLocked"));
       }
     }
   };
@@ -420,12 +420,12 @@ for (const id of FB.FEATURE_IDS) {
     async "targets/add"(message) {
       const target = FB.normalizeTarget(message.target);
       if (!target) {
-        throw new Error("請輸入有效的網域或網址，例如 reddit.com。");
+        throw new Error(FB.t("invalidTarget"));
       }
       await FB.store.update((state) => {
         const current = state.blockedTargets.map(FB.normalizeTarget).filter(Boolean);
         if (current.includes(target)) {
-          throw new Error(target + " 已經在清單裡。");
+          throw new Error(FB.t("targetExists", target));
         }
         state.blockedTargets = current.concat(target).sort();
       });
@@ -456,7 +456,7 @@ for (const id of FB.FEATURE_IDS) {
     async "limit/set"(message) {
       const minutes = Number(message.minutes);
       if (!Number.isInteger(minutes) || minutes < config.MIN_LIMIT_MINUTES || minutes > config.MAX_LIMIT_MINUTES) {
-        throw new Error("請輸入 " + config.MIN_LIMIT_MINUTES + " 到 " + config.MAX_LIMIT_MINUTES + " 分鐘。");
+        throw new Error(FB.t("limitRange", config.MIN_LIMIT_MINUTES, config.MAX_LIMIT_MINUTES));
       }
       await FB.store.update((state) => {
         FB.guard("limit/set", { minutes: minutes, previous: Number(state.limitMinutes) }, state);

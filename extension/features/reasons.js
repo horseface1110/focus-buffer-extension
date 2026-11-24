@@ -9,7 +9,7 @@
   const KEEP_ENTRIES = 200;
   const SHOWN_ENTRIES = 20;
   const CONFIRM_MS = 4000;
-  const QUICK_PICKS = ["查資料", "回訊息", "工作需要", "休息一下"];
+  const QUICK_PICKS = ["reasonResearch", "reasonMessages", "reasonWork", "reasonBreak"].map((key) => FB.t(key));
 
   const INPUT_ID = "fb-reason-input";
   const ERROR_ID = "fb-reason-error";
@@ -39,7 +39,7 @@
   // The whole log, oldest first, with the year in the time column: a
   // spreadsheet has no other way to tell one November from the next.
   function toCsv(log) {
-    const rows = [["時間", "網站", "理由"]];
+    const rows = [[FB.t("csvTime"), FB.t("csvSite"), FB.t("csvReason")]];
     for (const entry of log) {
       rows.push([FB.dayKey(entry.at) + " " + FB.formatClock(entry.at), FB.siteName(entry.target), entry.reason]);
     }
@@ -78,11 +78,11 @@
   function renderLog(ctx) {
     const el = ctx.el;
     const log = readLog(ctx.state);
-    const card = ctx.section("stats", "解鎖理由");
+    const card = ctx.section("stats", FB.t("reasonsHeading"));
     card.classList.add("reasons-log");
 
     if (log.length === 0) {
-      card.append(el("p", { class: "empty" }, "還沒有紀錄。"));
+      card.append(el("p", { class: "empty" }, FB.t("noRecords")));
       return;
     }
 
@@ -111,7 +111,7 @@
       )
     );
     if (log.length > SHOWN_ENTRIES) {
-      card.append(el("p", { class: "muted reasons-count" }, "共 " + log.length + " 筆，這裡只列最新 " + SHOWN_ENTRIES + " 筆。"));
+      card.append(el("p", { class: "muted reasons-count" }, FB.t("reasonsCount", log.length, SHOWN_ENTRIES)));
     }
 
     const copyButton = el(
@@ -121,10 +121,10 @@
         type: "button",
         onclick: async () => {
           const copied = await copyText(toCsv(log));
-          ctx.toast(copied ? "已複製 " + log.length + " 筆理由。" : "複製失敗，請再試一次。", copied ? "ok" : "error");
+          ctx.toast(copied ? FB.t("reasonsCopied", log.length) : FB.t("copyFailed"), copied ? "ok" : "error");
         }
       },
-      "複製全部"
+      FB.t("copyAll")
     );
 
     // Clearing cannot be undone, so it takes a second press.
@@ -138,10 +138,10 @@
         onclick: async () => {
           if (!armed) {
             armed = true;
-            clearButton.textContent = "再按一次清除";
+            clearButton.textContent = FB.t("pressAgainToClear");
             disarmTimer = window.setTimeout(() => {
               armed = false;
-              clearButton.textContent = "清除";
+              clearButton.textContent = FB.t("clear");
             }, CONFIRM_MS);
             return;
           }
@@ -154,10 +154,10 @@
             failure = error.message;
           }
           await ctx.refresh();
-          ctx.toast(failure || "已清除理由紀錄。", failure ? "error" : "ok");
+          ctx.toast(failure || FB.t("reasonsCleared"), failure ? "error" : "ok");
         }
       },
-      "清除"
+      FB.t("clear")
     );
 
     card.append(el("div", { class: "row reasons-actions" }, copyButton, clearButton));
@@ -187,7 +187,7 @@
     });
 
     card.append(
-      el("label", { class: "switch switch-heading reasons-switch" }, input, el("span", {}, "繼續前要寫理由"))
+      el("label", { class: "switch switch-heading reasons-switch" }, input, el("span", {}, FB.t("requireReason")))
     );
   }
 
@@ -247,7 +247,7 @@
           type: "text",
           maxLength: MAX_LENGTH,
           autocomplete: "off",
-          placeholder: "例如：查明天的天氣…",
+          placeholder: FB.t("reasonPlaceholder"),
           "aria-describedby": ERROR_ID
         });
 
@@ -300,7 +300,7 @@
           el(
             "div",
             { class: "fb-reason" },
-            el("label", { class: "fb-field-label", for: INPUT_ID }, "為什麼現在要打開？"),
+            el("label", { class: "fb-field-label", for: INPUT_ID }, FB.t("reasonQuestion")),
             el("div", { class: "fb-chips" }, chips),
             input,
             error
@@ -325,7 +325,7 @@
         const reason = input.value.trim().slice(0, MAX_LENGTH);
         if (reason.length < MIN_LENGTH) {
           if (error) {
-            error.textContent = "請先寫下理由，至少 " + MIN_LENGTH + " 個字。";
+            error.textContent = FB.t("reasonTooShort", MIN_LENGTH);
           }
           input.setAttribute("aria-invalid", "true");
           input.focus();

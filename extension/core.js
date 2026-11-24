@@ -8,6 +8,21 @@
 
   FB.api = api;
 
+  // ---------------------------------------------------------------------
+  // Text. Every string the user sees lives in _locales/<lang>/messages.json;
+  // the browser picks the language from the system (zh_TW is the default).
+  // FB.t("openedSite", "YouTube") → 「你剛剛打開了 YouTube」 / "You just opened YouTube".
+  // ---------------------------------------------------------------------
+  FB.t = function (key, ...substitutions) {
+    let text = "";
+    try {
+      text = api && api.i18n ? api.i18n.getMessage(key, substitutions.map(String)) : "";
+    } catch (error) {
+      text = "";
+    }
+    return text || key;
+  };
+
   FB.config = {
     WAIT_SECONDS: 10,
     TICK_MS: 5000,
@@ -179,7 +194,7 @@
   };
 
   FB.formatMinutes = function (seconds) {
-    return Math.floor(Number(seconds || 0) / 60) + " 分鐘";
+    return FB.t("minutes", Math.floor(Number(seconds || 0) / 60));
   };
 
   FB.formatClock = function (timestamp) {
@@ -231,7 +246,7 @@
   FB.send = async function (type, payload) {
     const response = await api.runtime.sendMessage(Object.assign({}, payload, { type: type }));
     if (!response || response.ok !== true) {
-      throw new Error((response && response.error) || "擴充功能沒有回應，請再試一次。");
+      throw new Error((response && response.error) || FB.t("noResponse"));
     }
     return response.result;
   };

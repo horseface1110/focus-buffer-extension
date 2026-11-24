@@ -54,13 +54,23 @@ function findChromium() {
   throw new Error("No Chromium found. Run `npx playwright-core install chromium`, or set FB_CHROMIUM to a Chromium binary.");
 }
 
-function buildTestCopy({ features, config }) {
+function buildTestCopy({ features, config, locale }) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), "focus-buffer-ext-"));
   fs.cpSync(EXTENSION_DIR, dir, { recursive: true });
 
   const manifestPath = path.join(dir, "manifest.json");
   const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
   manifest.host_permissions = ["*://*/*"];
+  // The extension follows the system language, which differs from machine
+  // to machine. Keep one language (Chinese unless the test asks for "en")
+  // so every run reads the same text.
+  const keep = locale || "zh_TW";
+  for (const name of fs.readdirSync(path.join(dir, "_locales"))) {
+    if (name !== keep) {
+      fs.rmSync(path.join(dir, "_locales", name), { recursive: true });
+    }
+  }
+  manifest.default_locale = keep;
   fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 
   let extra = "\nObject.assign(FB.config, " + JSON.stringify(Object.assign({}, FAST_CONFIG, config)) + ");\n";

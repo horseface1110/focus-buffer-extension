@@ -1,0 +1,822 @@
+{
+  "extName": {
+    "message": "Focus Buffer"
+  },
+  "extDescription": {
+    "message": "Pause before distracting sites: take a sip of water, look at your to-dos, then decide whether to go on."
+  },
+  "langTag": {
+    "message": "en"
+  },
+  "listSeparator": {
+    "message": ", "
+  },
+  "minutes": {
+    "message": "$p1$ min",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "times": {
+    "message": "$p1$×",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "noResponse": {
+    "message": "The extension didn't respond. Try again."
+  },
+  "settingLocked": {
+    "message": "This setting can't be changed right now."
+  },
+  "invalidTarget": {
+    "message": "Enter a valid domain or URL, like reddit.com."
+  },
+  "targetExists": {
+    "message": "$p1$ is already on the list.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "limitRange": {
+    "message": "Enter $p1$ to $p2$ minutes.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "overlayLabel": {
+    "message": "Pause before a distracting site"
+  },
+  "taskWater": {
+    "message": "Take a sip of water"
+  },
+  "taskTodo": {
+    "message": "Look at today's most important to-do"
+  },
+  "taskStretch": {
+    "message": "Stand up and stretch for 30 seconds"
+  },
+  "taskDoTodo": {
+    "message": "Do one to-do first"
+  },
+  "closePage": {
+    "message": "Close this page"
+  },
+  "continueAnyway": {
+    "message": "I really want to continue"
+  },
+  "openedSite": {
+    "message": "You just opened $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "usageLabel": {
+    "message": "Time used today"
+  },
+  "thisSite": {
+    "message": "This site"
+  },
+  "allSites": {
+    "message": "All sites"
+  },
+  "tasksLabel": {
+    "message": "Small tasks to get back on track"
+  },
+  "cannotContinue": {
+    "message": "You can't continue right now."
+  },
+  "cannotAutoClose": {
+    "message": "Couldn't close it automatically. Please close this tab yourself."
+  },
+  "autoCloseAfter": {
+    "message": "Closes automatically $p1$ min after you continue.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "continueIn": {
+    "message": "Continue in $p1$ s",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "initFailed": {
+    "message": "Couldn't start: $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "tabsLabel": {
+    "message": "Settings"
+  },
+  "tabSites": {
+    "message": "Sites"
+  },
+  "tabTodos": {
+    "message": "To-dos"
+  },
+  "tabStats": {
+    "message": "History"
+  },
+  "tabModes": {
+    "message": "Modes"
+  },
+  "permissionNotice": {
+    "message": "Some sites aren't allowed yet, so no pause shows up there."
+  },
+  "grantAll": {
+    "message": "Allow the listed sites"
+  },
+  "blockedSites": {
+    "message": "Paused sites"
+  },
+  "siteCountUnit": {
+    "message": "sites"
+  },
+  "targetInputLabel": {
+    "message": "Domain or URL to add"
+  },
+  "targetPlaceholder": {
+    "message": "reddit.com or a full URL…"
+  },
+  "add": {
+    "message": "Add"
+  },
+  "addCurrent": {
+    "message": "Add the current site"
+  },
+  "limitHeading": {
+    "message": "Time allowed per visit"
+  },
+  "minutesUnit": {
+    "message": "min"
+  },
+  "save": {
+    "message": "Save"
+  },
+  "notGranted": {
+    "message": "Not allowed yet"
+  },
+  "grant": {
+    "message": "Allow"
+  },
+  "remove": {
+    "message": "Remove"
+  },
+  "noTargets": {
+    "message": "No sites yet."
+  },
+  "added": {
+    "message": "Added $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "addedNotGranted": {
+    "message": "Added $p1$, but it isn't allowed yet.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "removed": {
+    "message": "Removed $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "undo": {
+    "message": "Undo"
+  },
+  "grantedToast": {
+    "message": "Allowed. Pauses are on."
+  },
+  "notGrantedToast": {
+    "message": "Permission wasn't granted."
+  },
+  "limitSaved": {
+    "message": "Pages now close $p1$ min after you continue.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "reasonResearch": {
+    "message": "Looking something up"
+  },
+  "reasonMessages": {
+    "message": "Replying to messages"
+  },
+  "reasonWork": {
+    "message": "For work"
+  },
+  "reasonBreak": {
+    "message": "Taking a break"
+  },
+  "csvTime": {
+    "message": "Time"
+  },
+  "csvSite": {
+    "message": "Site"
+  },
+  "csvReason": {
+    "message": "Reason"
+  },
+  "reasonsHeading": {
+    "message": "Reasons to continue"
+  },
+  "noRecords": {
+    "message": "Nothing yet."
+  },
+  "reasonsCount": {
+    "message": "$p1$ in total; showing the latest $p2$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "reasonsCopied": {
+    "message": "Copied $p1$ reasons.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "copyFailed": {
+    "message": "Couldn't copy. Try again."
+  },
+  "copyAll": {
+    "message": "Copy all"
+  },
+  "pressAgainToClear": {
+    "message": "Press again to clear"
+  },
+  "clear": {
+    "message": "Clear"
+  },
+  "reasonsCleared": {
+    "message": "Reasons cleared."
+  },
+  "requireReason": {
+    "message": "Ask for a reason before continuing"
+  },
+  "reasonPlaceholder": {
+    "message": "e.g. checking tomorrow's weather…"
+  },
+  "reasonQuestion": {
+    "message": "Why open it now?"
+  },
+  "reasonTooShort": {
+    "message": "Write a reason first, at least $p1$ characters.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "restRange": {
+    "message": "Choose a break of $p1$ to $p2$ minutes.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "alreadyResting": {
+    "message": "You're already on a break."
+  },
+  "noBreaksLeft": {
+    "message": "No breaks left today."
+  },
+  "dailyBreaksRange": {
+    "message": "Set daily breaks between 0 and $p1$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "restPill": {
+    "message": "Break ends in "
+  },
+  "restHeading": {
+    "message": "Break"
+  },
+  "restNote": {
+    "message": "No pauses show up during a break."
+  },
+  "restUntil": {
+    "message": "On a break until $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "restEnded": {
+    "message": "Break over."
+  },
+  "endEarly": {
+    "message": "End early"
+  },
+  "restLengthLabel": {
+    "message": "Break length"
+  },
+  "restStarted": {
+    "message": "Break started: $p1$ min.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "startRest": {
+    "message": "Start break"
+  },
+  "noBreaksLeftShort": {
+    "message": "No breaks left today"
+  },
+  "breaksLeft": {
+    "message": "$p1$ left today",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "dailyLimitSet": {
+    "message": "Up to $p1$ breaks a day.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "breaksPerDay": {
+    "message": "Breaks per day"
+  },
+  "today": {
+    "message": "Today"
+  },
+  "statShown": {
+    "message": "Opens"
+  },
+  "statMinutes": {
+    "message": "Minutes used"
+  },
+  "statContinued": {
+    "message": "Continued"
+  },
+  "statClosed": {
+    "message": "Closed"
+  },
+  "statAutoClosed": {
+    "message": "Closed on time"
+  },
+  "dayTitle": {
+    "message": "$p1$: $p2$ opens",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "chartSpoken": {
+    "message": "Opens per day, last $p1$ days: $p2$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "chartSpokenDay": {
+    "message": "$p1$: $p2$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "todaySuffix": {
+    "message": " (today)"
+  },
+  "lastDays": {
+    "message": "Last $p1$ days",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "sitesToday": {
+    "message": "Sites today"
+  },
+  "nothingToday": {
+    "message": "Nothing yet today."
+  },
+  "clearStats": {
+    "message": "Clear stats"
+  },
+  "confirmClearStats": {
+    "message": "Press again to clear"
+  },
+  "statsCleared": {
+    "message": "Stats cleared."
+  },
+  "visitNumber": {
+    "message": "#$p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "openedToday": {
+    "message": "Opened today"
+  },
+  "dayChip1": {
+    "message": "Mon"
+  },
+  "dayChip2": {
+    "message": "Tue"
+  },
+  "dayChip3": {
+    "message": "Wed"
+  },
+  "dayChip4": {
+    "message": "Thu"
+  },
+  "dayChip5": {
+    "message": "Fri"
+  },
+  "dayChip6": {
+    "message": "Sat"
+  },
+  "dayChip0": {
+    "message": "Sun"
+  },
+  "dayName": {
+    "message": "$p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "everyDay": {
+    "message": "Every day"
+  },
+  "dayRange": {
+    "message": "$p1$–$p2$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "modeAlways": {
+    "message": "All day"
+  },
+  "modeSchedule": {
+    "message": "Scheduled"
+  },
+  "modeBudget": {
+    "message": "Daily limit"
+  },
+  "strictBudgetUsed": {
+    "message": "Strict mode: today's $p1$-minute limit is used up.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "strictUntil": {
+    "message": "Strict mode is on. You can't continue until $p1$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "strictNow": {
+    "message": "Strict mode is on. You can't continue right now."
+  },
+  "pickMode": {
+    "message": "Choose all day, scheduled, or daily limit."
+  },
+  "pickDay": {
+    "message": "Pick at least one day."
+  },
+  "pickTimes": {
+    "message": "Enter a start and end time, like 09:00."
+  },
+  "sameTimes": {
+    "message": "The start and end time can't be the same."
+  },
+  "budgetRange": {
+    "message": "Enter a daily limit of $p1$ to $p2$ minutes.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "scheduleSameDay": {
+    "message": "$p1$, $p2$ to $p3$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      },
+      "p3": {
+        "content": "$3"
+      }
+    }
+  },
+  "scheduleOvernight": {
+    "message": "$p1$, $p2$ to $p3$ the next day.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      },
+      "p3": {
+        "content": "$3"
+      }
+    }
+  },
+  "budgetDescribe": {
+    "message": "$p1$ minutes a day.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "inSchedule": {
+    "message": "This is a blocked period. You can't continue until $p1$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "notInSchedule": {
+    "message": "Not in a blocked period right now."
+  },
+  "budgetBlocked": {
+    "message": "Used $p1$ today. The limit is used up, so you can't continue.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "budgetOk": {
+    "message": "Used $p1$ today. You can still continue.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "blockedUntil": {
+    "message": "You can't continue until $p1$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "modeOn": {
+    "message": "$p1$ is on",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "offAt": {
+    "message": "Turns off at $p1$",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "strictStaysOn": {
+    "message": "Strict mode stays on."
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "offDelay": {
+    "message": "Turning it off takes effect after $p1$ minutes.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "offRequested": {
+    "message": "Turn-off requested."
+  },
+  "requestOff": {
+    "message": "Request turn-off"
+  },
+  "strictNote": {
+    "message": "While it blocks, you can't continue or loosen your settings."
+  },
+  "whenToBlock": {
+    "message": "When to block"
+  },
+  "weekdays": {
+    "message": "Days"
+  },
+  "startTime": {
+    "message": "Start time"
+  },
+  "endTime": {
+    "message": "End time"
+  },
+  "timeTo": {
+    "message": "to"
+  },
+  "upToPerDay": {
+    "message": "Up to"
+  },
+  "budgetNote": {
+    "message": "Counted across all sites. Once it's used up, they're blocked until tomorrow."
+  },
+  "doubleWait": {
+    "message": "Double the wait each time you continue"
+  },
+  "strictEnabled": {
+    "message": "Strict mode is on."
+  },
+  "enableStrict": {
+    "message": "Turn on strict mode"
+  },
+  "strictLockedSettings": {
+    "message": "Strict mode is on. Turn it off before changing settings."
+  },
+  "strictAlreadyOff": {
+    "message": "Strict mode is already off."
+  },
+  "strictNoRemove": {
+    "message": "Strict mode is on. You can't remove sites."
+  },
+  "strictNoLonger": {
+    "message": "Strict mode is on. You can't make the time longer."
+  },
+  "strictNoUnrequire": {
+    "message": "Strict mode is on. You can't stop asking for reasons."
+  },
+  "strictNoMoreBreaks": {
+    "message": "Strict mode is on. You can't add more breaks."
+  },
+  "strictNoClearStats": {
+    "message": "Strict mode is on. You can't clear stats."
+  },
+  "strictNoBreak": {
+    "message": "Strict mode is on. You can't take a break now."
+  },
+  "strictHeading": {
+    "message": "Strict mode"
+  },
+  "deleteItem": {
+    "message": "Delete “$p1$”",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "todoPlaceholder": {
+    "message": "Next thing to do…"
+  },
+  "addTodo": {
+    "message": "Add a to-do"
+  },
+  "todoList": {
+    "message": "To-dos"
+  },
+  "noTodos": {
+    "message": "No to-dos yet."
+  },
+  "clearDone": {
+    "message": "Clear done"
+  },
+  "doneHeading": {
+    "message": "Done"
+  },
+  "noDone": {
+    "message": "Nothing done yet."
+  },
+  "doneCount": {
+    "message": "$p1$ in total; showing the latest $p2$.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      },
+      "p2": {
+        "content": "$2"
+      }
+    }
+  },
+  "todoEmpty": {
+    "message": "Type a to-do first."
+  },
+  "todoTooLong": {
+    "message": "A to-do can be at most $p1$ characters.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "todoTooManyAdd": {
+    "message": "You can have up to $p1$ open to-dos. Finish or delete some first.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "todoNotFound": {
+    "message": "Couldn't find that to-do. It may have been deleted."
+  },
+  "todoTooManyRestore": {
+    "message": "You can have up to $p1$ open to-dos. Finish or delete some before moving this back.",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  },
+  "moreTodos": {
+    "message": "$p1$ more",
+    "placeholders": {
+      "p1": {
+        "content": "$1"
+      }
+    }
+  }
+}

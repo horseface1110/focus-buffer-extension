@@ -1,7 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "先緩緩",
-  "description": "打開容易分心的網站前先緩一緩：喝口水、看看待辦，再決定要不要繼續。",
+  "name": "__MSG_extName__",
+  "description": "__MSG_extDescription__",
+  "default_locale": "zh_TW",
   "version": "1.0.0",
   "icons": {
     "16": "icons/icon-16.png",
@@ -21,7 +22,7 @@
     "*://*/*"
   ],
   "action": {
-    "default_title": "先緩緩",
+    "default_title": "__MSG_extName__",
     "default_popup": "popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",
